@@ -25,6 +25,9 @@ y = df['total']
 c = df['color']
 area = 75
 
+plt.xlabel('Week Number')
+plt.ylabel('Total Spent')
 plt.scatter(x, y, c=c, s=area)
+plt.plot(x,y,'k')
 plt.show()
 # LINE CHART ENDS HERE 
