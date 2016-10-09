@@ -13,24 +13,38 @@ columns = list(df)
 columns.remove('week')
 
 # Add all the rows (days) into 'total' column 
-df['total'] = df[columns].sum(axis=1)
+df['week_total'] = df[columns].sum(axis=1)
+
+# Get data for 'weekdays' only
+df['weekdays_total'] = df['week_total'] - df['saturday'] - df['sunday']
 
 # Add 'color' column as per budget
 BUDGET = 200
-df['color'] = np.where(df['total'] > BUDGET, 'red', 'green')
+df['week_color'] = np.where(df['week_total'] > BUDGET, 'red', 'yellow')
+df['weekdays_color'] = np.where(df['weekdays_total'] > BUDGET, 'red', 'g')
 
-# LINE CHART STARTS HERE
+# LINE CHART STARTS HERE (MATPLOTLIB)
+f, ax = plt.subplots(1)
+
 x = df['week']
-y = df['total']
-c = df['color']
-area = 75
-dim = np.arange(1, len(df), 1)
+y_week = df['week_total']
+c_week = df['week_color']
+y_weekdays = df['weekdays_total']
+c_weekdays = df['weekdays_color']
 
+area = 75
+dim = np.arange(1, len(df)+1, 1)
+
+ax.grid()
+ax.scatter(x, y_week, c=c_week, s=area, marker='o')
+ax.scatter(x, y_weekdays, c=c_weekdays, s=area, marker='s')
+ax.plot(x,y_week,'k')
+ax.plot(x,y_weekdays,'b-')
+ax.set_xlim(xmin=1, xmax=5)
+ax.set_ylim(ymin=0)
+
+plt.xticks(dim)
 plt.xlabel('Week Number')
 plt.ylabel('Total Spent')
-plt.xticks(dim)
-plt.grid()
-plt.scatter(x, y, c=c, s=area)
-plt.plot(x,y,'k')
-plt.show()
-# LINE CHART ENDS HERE 
+plt.show(f)
+# LINE CHART ENDS HERE (MATPLOTLIB)
