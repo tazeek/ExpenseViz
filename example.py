@@ -24,9 +24,12 @@ x = df['week']
 y = df['total']
 c = df['color']
 area = 75
+dim = np.arange(1, len(df), 1)
 
 plt.xlabel('Week Number')
 plt.ylabel('Total Spent')
+plt.xticks(dim)
+plt.grid()
 plt.scatter(x, y, c=c, s=area)
 plt.plot(x,y,'k')
 plt.show()
