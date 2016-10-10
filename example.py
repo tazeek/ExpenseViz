@@ -86,7 +86,15 @@ weekdays_tooltips = [ ("Total", "@weekdays_total") ]
 # CHART STARTS HERE (BOKEH)
 output_file('bokeh_example.html')
 
-p = figure( tools="", x_axis_label="Week Number", y_axis_label="Total Expenses", title="Weekly Expenses", background_fill_color='#DFDFE5', plot_width=800, plot_height=600)
+p = figure( tools="", title="Weekly Expenses", plot_width=800, plot_height=600)
+
+p.xaxis.axis_label = "Week Number"
+p.xaxis.axis_label_text_font_style = "bold"
+p.xaxis.axis_label_standoff = 25
+
+p.yaxis.axis_label="Total Expenses"
+p.yaxis.axis_label_text_font_style = "bold"
+p.yaxis.axis_label_standoff = 25
 
 p.x_range = Range1d(1, len(df))
 p.y_range = Range1d(0, round(max(df['week_total']), -1))
@@ -105,7 +113,14 @@ p.line('week', 'week_total', legend="Full Week", source=source, line_color = 'bl
 p.line('week', 'weekdays_total', legend="Weekdays Only", source=source, line_color="green")
 p.line('week', budget_duplicate,  legend="Budget", source=source, line_color="red")
 
+p.background_fill_color='#DFDFE5'
+p.background_fill_alpha = 0.5
+
 p.legend.location = "bottom_left"
+p.legend.label_text_font_style = "bold"
+p.legend.border_line_width = 2
+p.legend.border_line_color = "black"
+p.legend.border_line_alpha = 0.5
 
 show(p)
 # CHART ENDS HERE (BOKEH)
