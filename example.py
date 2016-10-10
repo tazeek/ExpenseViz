@@ -105,5 +105,7 @@ p.line('week', 'week_total', legend="Full Week", source=source, line_color = 'bl
 p.line('week', 'weekdays_total', legend="Weekdays Only", source=source, line_color="green")
 p.line('week', budget_duplicate,  legend="Budget", source=source, line_color="red")
 
+p.legend.location = "bottom_left"
+
 show(p)
 # CHART ENDS HERE (BOKEH)
