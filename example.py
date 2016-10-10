@@ -6,6 +6,8 @@ import pandas as pd
 import math
 #import matplotlib.pyplot as plt
 
+WEEKLY_BUDGET = 200
+
 # Load the expense file
 df = pd.read_csv('expense.csv')
 
@@ -24,8 +26,19 @@ df['week_total'] = df['week_total'].astype(int)
 df['weekdays_total'] = df['week_total'] - df['saturday'] - df['sunday']
 df['weekdays_total'] = df['weekdays_total'].astype(int)
 
+# Get weekly profit
+df['weekly_profit'] = WEEKLY_BUDGET - df['week_total']
+
+# Get overall profit and calculate on a weekly basis
+df['overall_profit'] = 0
+
+for i in range(len(df)):
+	if i == 0:
+		df['overall_profit'][i] = df['weekly_profit'][i]
+	else:
+		df['overall_profit'][i] = df['overall_profit'][i-1] + df['weekly_profit'][i]
+
 # Add 'color' column as per budget
-WEEKLY_BUDGET = 200
 df['week_color'] = np.where(df['week_total'] > WEEKLY_BUDGET, 'red', 'blue')
 df['weekdays_color'] = np.where(df['weekdays_total'] > WEEKLY_BUDGET, 'red', 'green')
 
@@ -38,11 +51,16 @@ c_weekdays = df['weekdays_color']
 
 ticks_number = math.ceil(max(y_week)/10)
 yticks = [ i*20 for i in range(ticks_number)]
-budget_duplicate = [ 200 for i in range(len(df)) ]
+budget_duplicate = [ WEEKLY_BUDGET for i in range(len(df)) ]
 
 source = ColumnDataSource(df)
 
-full_tooltips = [ ("Total", "@week_total") ]
+full_tooltips = [ 
+				("Total", "@week_total"), 
+				("Week Profit", "@weekly_profit"), 
+				("Overall Profit", "@overall_profit")
+	]
+
 weekdays_tooltips = [ ("Total", "@weekdays_total") ]
 
 # CHART STARTS HERE (MATPLOTLIB)
