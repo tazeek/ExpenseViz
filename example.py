@@ -24,7 +24,7 @@ df['weekdays_total'] = df['week_total'] - df['saturday'] - df['sunday']
 
 # Add 'color' column as per budget
 WEEKLY_BUDGET = 200
-df['week_color'] = np.where(df['week_total'] > WEEKLY_BUDGET, 'red', 'yellow')
+df['week_color'] = np.where(df['week_total'] > WEEKLY_BUDGET, 'red', 'blue')
 df['weekdays_color'] = np.where(df['weekdays_total'] > WEEKLY_BUDGET, 'red', 'green')
 
 # Chart Functionalities
@@ -38,7 +38,9 @@ ticks_number = math.ceil(max(y_week)/10)
 yticks = [ i*20 for i in range(ticks_number)]
 
 source = ColumnDataSource(df)
-tooltips = [ ("Total", "@week_total"), ("Monday","@monday"), ("Tuesday","@tuesday"), ("Wednesday", "@wednesday"), ("Thursday", "@thursday"), ("Friday", "@friday"), ("Saturday", "@saturday"), ("Sunday", "@sunday") ]
+
+full_tooltips = [ ("Total", "@week_total") ]
+weekdays_tooltips = [ ("Total", "@weekdays_total") ]
 
 # CHART STARTS HERE (MATPLOTLIB)
 # f, ax = plt.subplots(1)
@@ -60,20 +62,31 @@ tooltips = [ ("Total", "@week_total"), ("Monday","@monday"), ("Tuesday","@tuesda
 # plt.show(f)
 # CHART ENDS HERE (MATPLOTLIB)
 
+#r1 = p.circle([1,2,3], [4,5,6], color="blue")
+#p.add_tools(HoverTool(renderers=[r1], tooltips=TIPS))
+
+#r2 = p.square([4,5,6], [1,2,3], color="red")
+#p.add_tools(HoverTool(renderers=[r2], tooltips=TIPS))
+
 # CHART STARTS HERE (BOKEH)
 output_file('bokeh_example.html')
-hover= HoverTool(tooltips=tooltips)
+#hover= HoverTool(tooltips=tooltips)
 
-p = figure( tools=[hover], x_axis_label="Week Number", y_axis_label="Total Expenses", title="Weekly Expenses")
+p = figure( tools="", x_axis_label="Week Number", y_axis_label="Total Expenses", title="Weekly Expenses", background_fill_color='#DFDFE5')
 
 p.xaxis[0].ticker=FixedTicker(ticks=x)
 p.yaxis[0].ticker=FixedTicker(ticks=yticks)
+p.xgrid.grid_line_color = 'white'
+p.ygrid.grid_line_color = 'white'
 
-p.circle('week', 'week_total', fill_color='week_color', size=8, source=source)
-#p.line(x, y_week, legend="Full Week") 
+c1 = p.circle('week', 'week_total', fill_color='week_color', size=8, source=source)
+p.add_tools(HoverTool(renderers=[c1], tooltips=full_tooltips))
 
-#p.circle(x, y_weekdays, fill_color=c_weekdays, size=8)
-#p.line(x, y_weekdays, legend="Weekdays Only", line_color="red")
+c2 = p.circle('week', 'weekdays_total', fill_color='weekdays_color', size=8, source=source)
+p.add_tools(HoverTool(renderers=[c2], tooltips=weekdays_tooltips))
+
+p.line('week', 'week_total', legend="Full Week", source=source, line_color = 'blue') 
+p.line(x, y_weekdays, legend="Weekdays Only", line_color="green")
 
 show(p)
 # CHART ENDS HERE (BOKEH)
