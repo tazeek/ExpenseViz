@@ -3,6 +3,7 @@ from bokeh.models import FixedTicker
 
 import numpy as np
 import pandas as pd
+import math
 #import matplotlib.pyplot as plt
 
 # Load the expense file
@@ -35,6 +36,10 @@ c_week = df['week_color']
 y_weekdays = df['weekdays_total']
 c_weekdays = df['weekdays_color']
 
+ticks_number = math.ceil(max(y_week)/10)
+
+yticks = [ i*20 for i in range(ticks_number)]
+
 # area = 75
 # dim = np.arange(1, len(df)+1, 1)
 
@@ -57,8 +62,13 @@ output_file('bokeh_example.html')
 p = figure( tools="", x_axis_label="Week Number", y_axis_label="Total Expenses", title="Weekly Expenses")
 
 p.xaxis[0].ticker=FixedTicker(ticks=x)
+p.yaxis[0].ticker=FixedTicker(ticks=yticks)
+
 p.circle(x, y_week, fill_color=c_week, size=8)
 p.line(x, y_week, legend="Full Week") 
+
+p.circle(x, y_weekdays, fill_color=c_weekdays, size=8)
+p.line(x, y_weekdays, legend="Weekdays Only", line_color="red")
 
 show(p)
 # CHART ENDS HERE (BOKEH)
