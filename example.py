@@ -1,5 +1,5 @@
-from bokeh.plotting import figure, show, output_file
-from bokeh.models import FixedTicker
+from bokeh.plotting import figure, show, output_file, ColumnDataSource
+from bokeh.models import FixedTicker, HoverTool
 
 import numpy as np
 import pandas as pd
@@ -27,9 +27,7 @@ WEEKLY_BUDGET = 200
 df['week_color'] = np.where(df['week_total'] > WEEKLY_BUDGET, 'red', 'yellow')
 df['weekdays_color'] = np.where(df['weekdays_total'] > WEEKLY_BUDGET, 'red', 'green')
 
-# CHART STARTS HERE (MATPLOTLIB)
-# f, ax = plt.subplots(1)
-
+# Chart Functionalities
 x = df['week']
 y_week = df['week_total']
 c_week = df['week_color']
@@ -37,8 +35,13 @@ y_weekdays = df['weekdays_total']
 c_weekdays = df['weekdays_color']
 
 ticks_number = math.ceil(max(y_week)/10)
-
 yticks = [ i*20 for i in range(ticks_number)]
+
+source = ColumnDataSource(df)
+tooltips = [ ("Total", "@week_total"), ("Monday","@monday"), ("Tuesday","@tuesday"), ("Wednesday", "@wednesday"), ("Thursday", "@thursday"), ("Friday", "@friday"), ("Saturday", "@saturday"), ("Sunday", "@sunday") ]
+
+# CHART STARTS HERE (MATPLOTLIB)
+# f, ax = plt.subplots(1)
 
 # area = 75
 # dim = np.arange(1, len(df)+1, 1)
@@ -59,16 +62,18 @@ yticks = [ i*20 for i in range(ticks_number)]
 
 # CHART STARTS HERE (BOKEH)
 output_file('bokeh_example.html')
-p = figure( tools="", x_axis_label="Week Number", y_axis_label="Total Expenses", title="Weekly Expenses")
+hover= HoverTool(tooltips=tooltips)
+
+p = figure( tools=[hover], x_axis_label="Week Number", y_axis_label="Total Expenses", title="Weekly Expenses")
 
 p.xaxis[0].ticker=FixedTicker(ticks=x)
 p.yaxis[0].ticker=FixedTicker(ticks=yticks)
 
-p.circle(x, y_week, fill_color=c_week, size=8)
-p.line(x, y_week, legend="Full Week") 
+p.circle('week', 'week_total', fill_color='week_color', size=8, source=source)
+#p.line(x, y_week, legend="Full Week") 
 
-p.circle(x, y_weekdays, fill_color=c_weekdays, size=8)
-p.line(x, y_weekdays, legend="Weekdays Only", line_color="red")
+#p.circle(x, y_weekdays, fill_color=c_weekdays, size=8)
+#p.line(x, y_weekdays, legend="Weekdays Only", line_color="red")
 
 show(p)
 # CHART ENDS HERE (BOKEH)
