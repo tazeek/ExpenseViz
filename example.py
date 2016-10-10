@@ -1,5 +1,5 @@
 from bokeh.plotting import figure, show, output_file, ColumnDataSource
-from bokeh.models import FixedTicker, HoverTool
+from bokeh.models import FixedTicker, HoverTool, Span
 
 import numpy as np
 import pandas as pd
@@ -38,6 +38,7 @@ c_weekdays = df['weekdays_color']
 
 ticks_number = math.ceil(max(y_week)/10)
 yticks = [ i*20 for i in range(ticks_number)]
+budget_duplicate = [ 200 for i in range(len(df)) ]
 
 source = ColumnDataSource(df)
 
@@ -67,7 +68,7 @@ weekdays_tooltips = [ ("Total", "@weekdays_total") ]
 # CHART STARTS HERE (BOKEH)
 output_file('bokeh_example.html')
 
-p = figure( tools="", x_axis_label="Week Number", y_axis_label="Total Expenses", title="Weekly Expenses", background_fill_color='#DFDFE5')
+p = figure( tools="", x_axis_label="Week Number", y_axis_label="Total Expenses", title="Weekly Expenses", background_fill_color='#DFDFE5', plot_width=800, plot_height=600)
 
 p.xaxis[0].ticker=FixedTicker(ticks=x)
 p.yaxis[0].ticker=FixedTicker(ticks=yticks)
@@ -82,6 +83,7 @@ p.add_tools(HoverTool(renderers=[c2], tooltips=weekdays_tooltips))
 
 p.line('week', 'week_total', legend="Full Week", source=source, line_color = 'blue') 
 p.line('week', 'weekdays_total', legend="Weekdays Only", source=source, line_color="green")
+p.line('week', budget_duplicate,  legend="Budget", source=source, line_color="red")
 
 show(p)
 # CHART ENDS HERE (BOKEH)
