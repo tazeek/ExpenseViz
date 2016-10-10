@@ -18,9 +18,11 @@ columns.remove('week')
 
 # Add all the rows (days) into 'total' column 
 df['week_total'] = df[columns].sum(axis=1)
+df['week_total'] = df['week_total'].astype(int)
 
 # Get data for 'weekdays' only
 df['weekdays_total'] = df['week_total'] - df['saturday'] - df['sunday']
+df['weekdays_total'] = df['weekdays_total'].astype(int)
 
 # Add 'color' column as per budget
 WEEKLY_BUDGET = 200
@@ -62,15 +64,8 @@ weekdays_tooltips = [ ("Total", "@weekdays_total") ]
 # plt.show(f)
 # CHART ENDS HERE (MATPLOTLIB)
 
-#r1 = p.circle([1,2,3], [4,5,6], color="blue")
-#p.add_tools(HoverTool(renderers=[r1], tooltips=TIPS))
-
-#r2 = p.square([4,5,6], [1,2,3], color="red")
-#p.add_tools(HoverTool(renderers=[r2], tooltips=TIPS))
-
 # CHART STARTS HERE (BOKEH)
 output_file('bokeh_example.html')
-#hover= HoverTool(tooltips=tooltips)
 
 p = figure( tools="", x_axis_label="Week Number", y_axis_label="Total Expenses", title="Weekly Expenses", background_fill_color='#DFDFE5')
 
@@ -86,7 +81,7 @@ c2 = p.circle('week', 'weekdays_total', fill_color='weekdays_color', size=8, sou
 p.add_tools(HoverTool(renderers=[c2], tooltips=weekdays_tooltips))
 
 p.line('week', 'week_total', legend="Full Week", source=source, line_color = 'blue') 
-p.line(x, y_weekdays, legend="Weekdays Only", line_color="green")
+p.line('week', 'weekdays_total', legend="Weekdays Only", source=source, line_color="green")
 
 show(p)
 # CHART ENDS HERE (BOKEH)
