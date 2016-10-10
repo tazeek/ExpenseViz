@@ -1,5 +1,5 @@
 from bokeh.plotting import figure, show, output_file, ColumnDataSource
-from bokeh.models import FixedTicker, HoverTool, Span
+from bokeh.models import FixedTicker, HoverTool, Range1d
 
 import numpy as np
 import pandas as pd
@@ -70,6 +70,8 @@ output_file('bokeh_example.html')
 
 p = figure( tools="", x_axis_label="Week Number", y_axis_label="Total Expenses", title="Weekly Expenses", background_fill_color='#DFDFE5', plot_width=800, plot_height=600)
 
+p.x_range = Range1d(1, len(df))
+p.y_range = Range1d(0, round(max(df['week_total']), -1))
 p.xaxis[0].ticker=FixedTicker(ticks=x)
 p.yaxis[0].ticker=FixedTicker(ticks=yticks)
 p.xgrid.grid_line_color = 'white'
