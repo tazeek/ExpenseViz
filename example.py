@@ -103,15 +103,15 @@ p.yaxis[0].ticker=FixedTicker(ticks=yticks)
 p.xgrid.grid_line_color = 'white'
 p.ygrid.grid_line_color = 'white'
 
+p.line('week', 'week_total', legend="Full Week", source=source, line_color = 'blue') 
+p.line('week', 'weekdays_total', legend="Weekdays Only", source=source, line_color="green")
+p.line('week', budget_duplicate,  legend="Budget", source=source, line_color="red")
+
 c1 = p.circle('week', 'week_total', fill_color='week_color', size=8, source=source)
 p.add_tools(HoverTool(renderers=[c1], tooltips=full_tooltips))
 
 c2 = p.circle('week', 'weekdays_total', fill_color='weekdays_color', size=8, source=source)
 p.add_tools(HoverTool(renderers=[c2], tooltips=weekdays_tooltips))
-
-p.line('week', 'week_total', legend="Full Week", source=source, line_color = 'blue') 
-p.line('week', 'weekdays_total', legend="Weekdays Only", source=source, line_color="green")
-p.line('week', budget_duplicate,  legend="Budget", source=source, line_color="red")
 
 p.background_fill_color='#DFDFE5'
 p.background_fill_alpha = 0.5
