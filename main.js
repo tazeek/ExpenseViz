@@ -59,8 +59,22 @@ function plotScatter(data) {
 		.attr("dy", ".71em")
 		.style("text-anchor", "end")
 		.text("Total");
+	
+	// LINE PLOT STARTS HERE 
+	
+	// Define the line first 
+	var valueline = d3.svg.line()
+						.x(function(data) { return xScale(data.week_number); })
+						.y(function(data) { return yScale(data.total); });
+						
+	// Draw the line 
+	svg.append("path")
+		.attr("class", "line")
+        .attr("d", valueline(data));
 		
-	// Draw Circles
+	// LINE PLOT ENDS HERE
+	
+	// SCATTER PLOT STARTS HERE 
 	svg.selectAll(".dot")
 		.data(data)
 		.enter().append("circle")
@@ -69,6 +83,7 @@ function plotScatter(data) {
 		.attr("cx", xMap)
 		.attr("cy", yMap)
 		.style("fill", function(d) { return d.color; } );
+	// SCATTER PLOT ENDS HERE 
 		
 		
 	return 
