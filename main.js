@@ -23,12 +23,13 @@ var svg = d3.select("body").append("svg")
 // NOTE: Refer to example.py for data processing
 d3.csv("expense.csv", function(error, data){
 	
-	//Get Keys and remove 'week' from the keys
+	// Get Keys and remove 'week' from the keys
 	keys = d3.keys(data[0]);
 	keys.shift();
 	
-	//Array to store the data 
-	total = []
+	// Array to store the data 
+	weeks = []
+	budget = 200
 	
 	// Turn "String" into integers
 	data.forEach( function(d){
@@ -40,11 +41,21 @@ d3.csv("expense.csv", function(error, data){
 			sum += +d[keys[key]];
 		}
 		
-		//Append
-		total.push(Math.round(sum))
+		// Round up the sum 
+		sum = Math.round(sum)
+		
+		// Calculate profit
+		profit = budget - sum
+		
+		// Make a JSON out of the statistics
+		week_stat = { "week": +d.week, "total": sum, "profit": profit }
+		
+		weeks.push(week_stat)
 	});
 	
-	console.log(total)
+	console.log(weeks)
 
 	return
 });
+
+//python -m http.server 8000 --bind 127.0.0.1
