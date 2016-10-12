@@ -1,16 +1,9 @@
-// For the graph
-var margin = {top: 20, right: 20, bottom: 30, left: 40};
-var width = 960 - margin.left - margin.right;
-var height = 500 - margin.top - margin.bottom;
-
-//Add graph to the canvas of the webpage
-var svg = d3.select("body").append("svg")
-			.attr("width", width + margin.left + margin.right)
-			.attr("height", height + margin.top + margin.bottom)
-			.append("g")
-			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-			
 function plotScatter(data) {
+	
+	// For the graph
+	var margin = {top: 20, right: 20, bottom: 30, left: 40};
+	var width = 960 - margin.left - margin.right;
+	var height = 500 - margin.top - margin.bottom;
 	
 	// Plot X-Axis values 
 	var xScale = d3.scale.linear().range([0, width]);
@@ -27,6 +20,13 @@ function plotScatter(data) {
 	// Prepare domain for X-Axis and Y-Axis
 	xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
 	yScale.domain([0, d3.max(data, yValue)+1]);
+	
+	//Add graph to the canvas of the webpage
+	var svg = d3.select("body").append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	
 	// Plot X-Axis first 
 	svg.append("g")
