@@ -59,6 +59,14 @@ function plotScatter(data) {
 		.attr("dy", ".71em")
 		.style("text-anchor", "end")
 		.text("Total");
+		
+	// Draw budget line 
+	svg.append("line")
+		.style("stroke","red")
+		.attr("x1", xScale(0))
+		.attr("y1", yScale(200))
+		.attr("x2", xScale(data.length))
+		.attr("y2", yScale(200));
 	
 	// LINE PLOT STARTS HERE 
 	
