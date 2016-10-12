@@ -5,10 +5,32 @@
 
 	<title>Expense Visualization (ExpenseViz)</title>
 	<script src="https://d3js.org/d3.v3.min.js"></script>
-	<script src="main.js"></script>
 	
+	<style>
+	body {
+	  font: 11px sans-serif;
+	}
+
+	.axis path,
+	.axis line {
+	  fill: none;
+	  stroke: #000;
+	  shape-rendering: crispEdges;
+	}
+
+	.dot {
+	  stroke: #000;
+	}
+
+	.tooltip {
+	  position: absolute;
+	  width: 200px;
+	  height: 28px;
+	  pointer-events: none;
+	}
+	</style>
 </head>
 
 <body>
-
+	<script src="main.js"></script>
 </body>
