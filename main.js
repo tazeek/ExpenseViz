@@ -1,7 +1,12 @@
 function plotScatter(data) {
 	
+	// Get the maximum spent in a week and round to nearest 10
+	var week_max = Math.max.apply(Math,weeks_array.map(function(week){return week.total;}))
+	var week_max = Math.round(week_max / 10) * 10
+	
 	// Number of ticks
 	var x_ticks = data.length
+	var y_ticks = week_max/20
 	
 	// For the graph
 	var margin = {top: 20, right: 20, bottom: 30, left: 40};
@@ -16,13 +21,13 @@ function plotScatter(data) {
 	
 	// Plot Y-Axis values
 	var yScale = d3.scale.linear().range([height,0]);
-	var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(20);
+	var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(12);
 	var yValue = function(data) { return data["total"]; }
 	var yMap = function(data) { return yScale(yValue(data)); }
 	
 	// Prepare domain for X-Axis and Y-Axis
-	xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
-	yScale.domain([0, d3.max(data, yValue)+1]);
+	xScale.domain([0, data.length]);
+	yScale.domain([0, week_max]);
 	
 	//Add graph to the canvas of the webpage
 	var svg = d3.select("body").append("svg")
@@ -60,7 +65,7 @@ function plotScatter(data) {
 		.data(data)
 		.enter().append("circle")
 		.attr("class", "dot")
-		.attr("r", 5)
+		.attr("r", 3.5)
 		.attr("cx", xMap)
 		.attr("cy", yMap)
 		.style("fill", function(d) { return d.color; } );
@@ -128,7 +133,7 @@ d3.csv("expense.csv", function(error, data){
 	}
 	
 	plotScatter(weeks_array)
-
+	
 	return
 });
 
