@@ -1,5 +1,8 @@
 function plotScatter(data) {
 	
+	// Number of ticks
+	var x_ticks = data.length
+	
 	// For the graph
 	var margin = {top: 20, right: 20, bottom: 30, left: 40};
 	var width = 960 - margin.left - margin.right;
@@ -7,15 +10,15 @@ function plotScatter(data) {
 	
 	// Plot X-Axis values 
 	var xScale = d3.scale.linear().range([0, width]);
-	var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(20);
-	var xValue = function(d) { return d.week_number;}
-	var xMap = function(d) { return xScale(xValue(d));}
+	var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(x_ticks);
+	var xValue = function(data) { return data.week_number;}
+	var xMap = function(data) { return xScale(xValue(data));}
 	
 	// Plot Y-Axis values
 	var yScale = d3.scale.linear().range([height,0]);
 	var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(20);
-	var yValue = function(d) { return d.total; }
-	var yMap = function(d) { return yMap(yValue(d)); }
+	var yValue = function(data) { return data["total"]; }
+	var yMap = function(data) { return yScale(yValue(data)); }
 	
 	// Prepare domain for X-Axis and Y-Axis
 	xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
@@ -51,6 +54,19 @@ function plotScatter(data) {
 		.attr("dy", ".71em")
 		.style("text-anchor", "end")
 		.text("Total");
+		
+	// Draw Circles
+	svg.selectAll(".dot")
+		.data(data)
+		.enter().append("circle")
+		.attr("class", "dot")
+		.attr("r", 5)
+		.attr("cx", xMap)
+		.attr("cy", yMap)
+		.style("fill", function(d) { return d.color; } );
+		
+		
+	return 
 		
 }
 				
