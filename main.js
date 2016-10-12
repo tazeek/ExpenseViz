@@ -28,7 +28,7 @@ d3.csv("expense.csv", function(error, data){
 	keys.shift();
 	
 	// Array to store the data 
-	weeks = []
+	weeks_array = []
 	budget = 200
 	
 	// Turn "String" into integers
@@ -37,23 +37,39 @@ d3.csv("expense.csv", function(error, data){
 		// Calculate total
 		var sum = 0
 		
-		for(key in keys) { 
-			sum += +d[keys[key]];
+		for(x in keys) { 
+			sum += +d[keys[x]];
 		}
 		
 		// Round up the sum 
-		sum = Math.round(sum)
+		sum = Math.round(sum);
 		
 		// Calculate profit
-		profit = budget - sum
+		profit = budget - sum;
 		
 		// Make a JSON out of the statistics
-		week_stat = { "week": +d.week, "total": sum, "profit": profit }
+		week_stat = { "week_number": +d.week, "total": sum, "profit": profit };
 		
-		weeks.push(week_stat)
+		weeks_array.push(week_stat);
 	});
 	
-	console.log(weeks)
+	// Calculate overall profit
+	for(x in weeks_array) {
+		week_json = weeks_array[x];
+		
+		//First week 
+		if(x == 0){
+			overall_profit = week_json.profit
+		} else {
+			//Based on previous week's overall 
+			overall_profit = week_json.profit + weeks_array[x-1].overall_profit
+		}
+		
+		// Store as new Key-value pair
+		week_json["overall_profit"] = overall_profit
+	}
+	
+	console.log(weeks_array)
 
 	return
 });
