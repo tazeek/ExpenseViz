@@ -1,4 +1,4 @@
-function plotScatter(data) {
+function plotScatter(data, budget) {
 	
 	// Get the maximum spent in a week and round to nearest 10
 	var week_max = Math.max.apply(Math,weeks_array.map(function(week){return week.total;}))
@@ -21,7 +21,7 @@ function plotScatter(data) {
 	
 	// Plot Y-Axis values
 	var yScale = d3.scale.linear().range([height,0]);
-	var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(12);
+	var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(y_ticks);
 	var yValue = function(data) { return data["total"]; }
 	var yMap = function(data) { return yScale(yValue(data)); }
 	
@@ -64,9 +64,9 @@ function plotScatter(data) {
 	svg.append("line")
 		.style("stroke","red")
 		.attr("x1", xScale(0))
-		.attr("y1", yScale(200))
+		.attr("y1", yScale(budget))
 		.attr("x2", xScale(data.length))
-		.attr("y2", yScale(200));
+		.attr("y2", yScale(budget));
 	
 	// LINE PLOT STARTS HERE 
 	
@@ -107,36 +107,53 @@ d3.csv("expense.csv", function(error, data){
 	keys = d3.keys(data[0]);
 	keys.shift();
 	
-	// Array to store the data 
-	weeks_array = []
-	budget = 200
+	// Initialize variables
+	weeks_array = [];
+	weekdays_array = [];
+	weekends = ["saturday","sunday"];
+	budget = 200;
 	
-	// Turn "String" into integers
+	// Transferring from csv file to dictionary
 	data.forEach( function(d){
 		
 		// Calculate total
-		var sum = 0
-		var color = "blue"
+		var full_sum = 0;
+		var weekdays_sum = 0;
+		
+		var full_color = "blue";
+		var weekdays_color = "green";
 		
 		for(x in keys) { 
-			sum += +d[keys[x]];
+			full_sum += +d[keys[x]];
+			
+			if(!weekends.includes(keys[x])) {
+				weekdays_sum += +d[keys[x]];
+			}
 		}
 		
 		//Give color to the values
-		if(sum > budget) {
-			color = "red"
+		if(full_sum > budget) {
+			full_color = "red";
+		}
+		
+		if(weekdays_sum > budget) {
+			weekdays_color = "red";
 		}
 		
 		// Round up the sum 
-		sum = Math.round(sum);
+		full_sum = Math.round(full_sum);
+		weekdays_sum = Math.round(weekdays_sum);
 		
 		// Calculate profit
-		profit = budget - sum;
+		profit = budget - full_sum;
 		
 		// Make a JSON out of the statistics
-		week_stat = { "week_number": +d.week, "total": sum, "profit": profit, "color": color };
+		week_stat = { "week_number": +d.week, "total": full_sum, "profit": profit, "color": full_color };
+		weekdays_stat = { "week_number": +d.week, "total": weekdays_sum, "color": weekdays_color };
 		
+		// Store them
 		weeks_array.push(week_stat);
+		weekdays_array.push(weekdays_stat);
 	});
 	
 	// Calculate overall profit
@@ -155,7 +172,9 @@ d3.csv("expense.csv", function(error, data){
 		week_json["overall_profit"] = overall_profit
 	}
 	
-	plotScatter(weeks_array)
+	console.log(weekdays_array);
+	return;
+	plotScatter(weeks_array, budget);
 	
 	return
 });
