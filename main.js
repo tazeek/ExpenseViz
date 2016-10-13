@@ -9,7 +9,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 	var y_ticks = week_max/20
 	
 	// For the graph
-	var margin = {top: 50, right: 30, bottom: 50, left: 100};
+	var margin = {top: 50, right: 30, bottom: 60, left: 100};
 	var width = 960 - margin.left - margin.right;
 	var height = 540 - margin.top - margin.bottom;
 	
@@ -25,16 +25,27 @@ function plotScatter(full_data, weekdays_data, budget) {
 	var yValue = function(data) { return data["total"]; }
 	var yMap = function(data) { return yScale(yValue(data)); }
 	
+	// Prepare Tooltip
+	var tooltip = d3.select("body").append("div")
+					.attr("class", "tooltip")
+					.style("opacity", 0);
+	
 	// Prepare domain for X-Axis and Y-Axis
 	xScale.domain([0, x_ticks]);
 	yScale.domain([0, week_max]);
 	
-	//Add graph to the canvas of the webpage
+	// Add graph to the canvas of the webpage
 	var svg = d3.select("body").append("svg")
 				.attr("width", width + margin.left + margin.right)
 				.attr("height", height + margin.top + margin.bottom)
 				.append("g")
 				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+				
+	// Adding Background color
+	svg.append("rect")
+		.attr("width", width)
+		.attr("height", height)
+		.attr("fill", "lightgrey");
 	
 	// Plot X-Axis first 
 	svg.append("g")
@@ -43,7 +54,9 @@ function plotScatter(full_data, weekdays_data, budget) {
 		.call(xAxis)
 		.append("text")
 		.attr("class", "label")
-		.attr("transform", "translate(" + (width/2) + "," + 50 + ")")
+		.attr("transform", "translate(" + (width/2) + "," + margin.bottom + ")")
+		.style("font-size", "13px")
+		.style("font-weight", "bold")
 		.style("text-anchor", "middle")
 		.text("Week Number");
 		
@@ -53,10 +66,12 @@ function plotScatter(full_data, weekdays_data, budget) {
 		.call(yAxis)
 		.append("text")
 		.attr("class", "label")
-		.attr("transform", "translate("+ -50 +","+(height/2)+")rotate(-90)")
+		.attr("transform", "translate("+ -70 +","+(height/2)+")rotate(-90)")
 		.attr("dy", ".71em")
+		.style("font-size", "13px")
+		.style("font-weight", "bold")
 		.style("text-anchor", "middle")
-		.text("Total");
+		.text("Total Expenses");
 		
 	// Draw budget line 
 	svg.append("line")
