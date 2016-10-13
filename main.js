@@ -9,19 +9,19 @@ function plotScatter(full_data, weekdays_data, budget) {
 	var y_ticks = week_max/20
 	
 	// For the graph
-	var margin = {top: 20, right: 20, bottom: 30, left: 40};
+	var margin = {top: 50, right: 30, bottom: 50, left: 100};
 	var width = 960 - margin.left - margin.right;
-	var height = 500 - margin.top - margin.bottom;
+	var height = 540 - margin.top - margin.bottom;
 	
 	// Plot X-Axis values 
 	var xScale = d3.scale.linear().range([0, width]);
-	var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(x_ticks).innerTickSize(-height);
+	var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(x_ticks);
 	var xValue = function(data) { return data.week_number;}
 	var xMap = function(data) { return xScale(xValue(data));}
 	
 	// Plot Y-Axis values
 	var yScale = d3.scale.linear().range([height,0]);
-	var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(y_ticks).innerTickSize(-width);
+	var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(y_ticks);
 	var yValue = function(data) { return data["total"]; }
 	var yMap = function(data) { return yScale(yValue(data)); }
 	
@@ -43,9 +43,8 @@ function plotScatter(full_data, weekdays_data, budget) {
 		.call(xAxis)
 		.append("text")
 		.attr("class", "label")
-		.attr("x", width)
-		.attr("y", -6)
-		.style("text-anchor", "end")
+		.attr("transform", "translate(" + (width/2) + "," + 50 + ")")
+		.style("text-anchor", "middle")
 		.text("Week Number");
 		
 	// Plot Y-Axis next 
@@ -54,10 +53,9 @@ function plotScatter(full_data, weekdays_data, budget) {
 		.call(yAxis)
 		.append("text")
 		.attr("class", "label")
-		.attr("transform", "rotate(-90)")
-		.attr("y", 6)
+		.attr("transform", "translate("+ -50 +","+(height/2)+")rotate(-90)")
 		.attr("dy", ".71em")
-		.style("text-anchor", "end")
+		.style("text-anchor", "middle")
 		.text("Total");
 		
 	// Draw budget line 
