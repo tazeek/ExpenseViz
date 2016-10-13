@@ -19,11 +19,17 @@ function plotScatter(full_data, weekdays_data, budget) {
 	var xValue = function(data) { return data.week_number;}
 	var xMap = function(data) { return xScale(xValue(data));}
 	
+	// Grid lines for X-Axis 
+	xAxis.innerTickSize(-height).outerTickSize(0).tickPadding(10);
+	
 	// Plot Y-Axis values
 	var yScale = d3.scale.linear().range([height,0]);
 	var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(y_ticks);
 	var yValue = function(data) { return data["total"]; }
 	var yMap = function(data) { return yScale(yValue(data)); }
+	
+	// Grid lines for Y-Axis
+	yAxis.innerTickSize(-width).outerTickSize(0).tickPadding(10);
 	
 	// Prepare Tooltip
 	var tooltip = d3.select("body").append("div")
@@ -45,7 +51,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 	svg.append("rect")
 		.attr("width", width)
 		.attr("height", height)
-		.attr("fill", "lightgrey");
+		.attr("fill", "#FFFFE0");
 	
 	// Plot X-Axis first 
 	svg.append("g")
