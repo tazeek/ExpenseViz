@@ -31,7 +31,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 					.style("opacity", 0);
 	
 	// Prepare domain for X-Axis and Y-Axis
-	xScale.domain([0, x_ticks]);
+	xScale.domain([1, x_ticks]);
 	yScale.domain([0, week_max]);
 	
 	// Add graph to the canvas of the webpage
@@ -76,7 +76,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 	// Draw budget line 
 	svg.append("line")
 		.style("stroke","red")
-		.attr("x1", xScale(0))
+		.attr("x1", xScale(1))
 		.attr("y1", yScale(budget))
 		.attr("x2", xScale(x_ticks))
 		.attr("y2", yScale(budget));
