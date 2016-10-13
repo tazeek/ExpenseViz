@@ -33,8 +33,8 @@ function plotScatter(full_data, weekdays_data, budget) {
 	
 	// Prepare Tooltip
 	var tooltip = d3.select("body").append("div")
-					.attr("class", "tooltip")
-					.style("opacity", 0);
+			.attr("class", "tooltip")				
+			.style("opacity", 0);
 	
 	// Prepare domain for X-Axis and Y-Axis
 	xScale.domain([1, x_ticks]);
@@ -124,14 +124,30 @@ function plotScatter(full_data, weekdays_data, budget) {
 		.attr("cy", yMap)
 		.style("fill", function(d) { return d.color; } )
 		.on("mouseover", function(d){
+			
 			d3.select(this).transition()
 				.duration(200)
 				.style("fill", "black");
+				
+			tooltip.transition().duration(200)
+					.style("opacity", 0.9);
+			
+			tooltip.html(
+				"<strong>Total:</strong> <span style='color:red'>" + d.total + "</span>"
+			)
+			.style("left", (d3.event.pageX) + "px")
+			.style("top", (d3.event.pageY - 28) + "px");
 		})
-		.on("mouseout", function(d) { 
-			d3.select(this).style("fill", function (d) {
-				return d.color; 
-			});
+		.on("mouseout", function(d) {
+			
+			d3.select(this).transition()
+				.duration(0)
+				.style("fill", function (d) {
+					return d.color; 
+			})
+			
+			tooltip.transition().duration(200)
+					.style("opacity", 0);
 		});
 		
 	// Weekdays circles 
@@ -147,11 +163,25 @@ function plotScatter(full_data, weekdays_data, budget) {
 			d3.select(this).transition()
 				.duration(200)
 				.style("fill", "black");
+				
+			tooltip.transition().duration(200)
+					.style("opacity", 0.9);
+
+			tooltip.html(
+				"<strong>Total:</strong> <span style='color:red'>" + d.total + "</span>"
+			)
+			.style("left", (d3.event.pageX) + "px")
+			.style("top", (d3.event.pageY - 28) + "px");
 		})
 		.on("mouseout", function(d) { 
-			d3.select(this).style("fill", function (d) {
-				return d.color; 
+			d3.select(this).transition()
+				.duration(0)
+				.style("fill", function (d) {
+					return d.color; 
 			});
+			
+			tooltip.transition().duration(200)
+					.style("opacity", 0);
 		});
 		
 	// SCATTER PLOT ENDS HERE 
