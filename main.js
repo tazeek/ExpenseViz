@@ -119,20 +119,40 @@ function plotScatter(full_data, weekdays_data, budget) {
 		.data(full_data)
 		.enter().append("circle")
 		.attr("class", "full")
-		.attr("r", 3.5)
+		.attr("r", 5)
 		.attr("cx", xMap)
 		.attr("cy", yMap)
-		.style("fill", function(d) { return d.color; } );
+		.style("fill", function(d) { return d.color; } )
+		.on("mouseover", function(d){
+			d3.select(this).transition()
+				.duration(200)
+				.style("fill", "black");
+		})
+		.on("mouseout", function(d) { 
+			d3.select(this).style("fill", function (d) {
+				return d.color; 
+			});
+		});
 		
 	// Weekdays circles 
 	svg.selectAll(".weekdays")
 		.data(weekdays_data)
 		.enter().append("circle")
 		.attr("class", "weekdays")
-		.attr("r", 3.5)
+		.attr("r", 5)
 		.attr("cx", xMap)
 		.attr("cy", yMap)
-		.style("fill", function(d) { return d.color; });
+		.style("fill", function(d) { return d.color; })
+		.on("mouseover", function(d){
+			d3.select(this).transition()
+				.duration(200)
+				.style("fill", "black");
+		})
+		.on("mouseout", function(d) { 
+			d3.select(this).style("fill", function (d) {
+				return d.color; 
+			});
+		});
 		
 	// SCATTER PLOT ENDS HERE 
 		
