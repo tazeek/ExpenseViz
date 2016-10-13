@@ -1,11 +1,11 @@
-function plotScatter(data, budget) {
+function plotScatter(full_data, weekdays_data, budget) {
 	
 	// Get the maximum spent in a week and round to nearest 10
 	var week_max = Math.max.apply(Math,weeks_array.map(function(week){return week.total;}))
 	var week_max = Math.round(week_max / 10) * 10
 	
 	// Number of ticks
-	var x_ticks = data.length
+	var x_ticks = full_data.length
 	var y_ticks = week_max/20
 	
 	// For the graph
@@ -15,18 +15,18 @@ function plotScatter(data, budget) {
 	
 	// Plot X-Axis values 
 	var xScale = d3.scale.linear().range([0, width]);
-	var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(x_ticks);
+	var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(x_ticks).innerTickSize(-height);
 	var xValue = function(data) { return data.week_number;}
 	var xMap = function(data) { return xScale(xValue(data));}
 	
 	// Plot Y-Axis values
 	var yScale = d3.scale.linear().range([height,0]);
-	var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(y_ticks);
+	var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(y_ticks).innerTickSize(-width);
 	var yValue = function(data) { return data["total"]; }
 	var yMap = function(data) { return yScale(yValue(data)); }
 	
 	// Prepare domain for X-Axis and Y-Axis
-	xScale.domain([0, data.length]);
+	xScale.domain([0, x_ticks]);
 	yScale.domain([0, week_max]);
 	
 	//Add graph to the canvas of the webpage
@@ -65,32 +65,56 @@ function plotScatter(data, budget) {
 		.style("stroke","red")
 		.attr("x1", xScale(0))
 		.attr("y1", yScale(budget))
-		.attr("x2", xScale(data.length))
+		.attr("x2", xScale(x_ticks))
 		.attr("y2", yScale(budget));
-	
-	// LINE PLOT STARTS HERE 
-	
+		
 	// Define the line first 
 	var valueline = d3.svg.line()
-						.x(function(data) { return xScale(data.week_number); })
-						.y(function(data) { return yScale(data.total); });
-						
-	// Draw the line 
-	svg.append("path")
-		.attr("class", "line")
-        .attr("d", valueline(data));
-		
-	// LINE PLOT ENDS HERE
+					.x(function(data) { return xScale(data.week_number); })
+					.y(function(data) { return yScale(data.total); });
 	
-	// SCATTER PLOT STARTS HERE 
-	svg.selectAll(".dot")
-		.data(data)
+	// LINE PLOTS STARTS HERE 
+						
+	// Draw the line (Full week)
+	svg.append("path")
+		.attr("class", "full_line")
+        .attr("d", valueline(full_data))
+		.attr("stroke", "steelblue")
+		.attr("stroke-width", 2)
+		.attr("fill", "none");
+		
+	// Draw the line (Weekdays only)
+	svg.append("path")
+		.attr("class", "weekdays_line")
+		.attr("d", valueline(weekdays_data))
+		.attr("stroke", "green")
+		.attr("stroke-width", 2)
+		.attr("fill", "none");
+		
+	// LINE PLOTS ENDS HERE
+	
+	// SCATTER PLOT STARTS HERE
+	
+	//Full week circles 
+	svg.selectAll(".full")
+		.data(full_data)
 		.enter().append("circle")
-		.attr("class", "dot")
+		.attr("class", "full")
 		.attr("r", 3.5)
 		.attr("cx", xMap)
 		.attr("cy", yMap)
 		.style("fill", function(d) { return d.color; } );
+		
+	// Weekdays circles 
+	svg.selectAll(".weekdays")
+		.data(weekdays_data)
+		.enter().append("circle")
+		.attr("class", "weekdays")
+		.attr("r", 3.5)
+		.attr("cx", xMap)
+		.attr("cy", yMap)
+		.style("fill", function(d) { return d.color; });
+		
 	// SCATTER PLOT ENDS HERE 
 		
 		
@@ -172,9 +196,7 @@ d3.csv("expense.csv", function(error, data){
 		week_json["overall_profit"] = overall_profit
 	}
 	
-	console.log(weekdays_array);
-	return;
-	plotScatter(weeks_array, budget);
+	plotScatter(weeks_array, weekdays_array, budget);
 	
 	return
 });
