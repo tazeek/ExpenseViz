@@ -1,5 +1,9 @@
 function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 	
+	var height = "20px";
+	var width = "60px";
+	var tooltip_gap = 28
+	
 	svg.selectAll("." + class_name)
 		.data(data)
 		.enter().append("circle")
@@ -34,12 +38,18 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 				var html_overall_profit = "<br><strong>Overall: </strong><span style = 'color: " + overall_profit_color + "'>" + d.overall_profit + "</span>";
 				html_text += html_profit + html_overall_profit;
 				
+				height = "40px";
+				width = "70px";
+				tooltip_gap = 50
 			}
 			
 			// Add HTML Text to Tooltip
 			tooltip.html(html_text)
-			.style("left", (d3.event.pageX) + "px")
-			.style("top", (d3.event.pageY - 28) + "px");
+			.style("left", (d3.event.pageX - 15) + "px")
+			.style("top", (d3.event.pageY - tooltip_gap) + "px")
+			.style("height", height)
+			.style("width", width);
+			
 		})
 		.on("mouseout", function(d) {
 			
