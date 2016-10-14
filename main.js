@@ -20,11 +20,24 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 					.style("opacity", 0.9);
 			
 			// HTML Text in the label
-			html_total = "<strong>Total: </strong>"
-			html_span = "<span style = 'color: " + d.color + "'>" + d.total + "</span>"
+			var html_text = "";
+			var html_total = "<strong>Total: </strong>";
+			var html_span = "<span style = 'color: " + d.color + "'>" + d.total + "</span>";
+			html_text = html_total + html_span;
+			
+			if("profit" in d){
+				
+				var profit_color = d.profit < 0 ? "red" : "green";
+				var overall_profit_color = d.overall_profit < 0 ? "red" : "green";
+				
+				var html_profit = "<br><strong>Profit: </strong><span style = 'color: " ;
+				var html_overall_profit = "<br><strong>Overall: </strong>";
+				html_text += html_profit + html_overall_profit;
+				
+			}
 			
 			// Add HTML Text to Tooltip
-			tooltip.html(html_total + html_span)
+			tooltip.html(html_text)
 			.style("left", (d3.event.pageX) + "px")
 			.style("top", (d3.event.pageY - 28) + "px");
 		})
@@ -149,7 +162,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 	// LINE PLOTS STARTS HERE 
 	
 	drawLine(svg, full_data, "full_line", valueline, "steelblue");
-	drawLine(svg, weekdays_data, "weekdays_line", valueline, "green");
+	drawLine(svg, weekdays_data, "weekdays_line", valueline, "#B8860B");
 		
 	// LINE PLOTS ENDS HERE
 	
@@ -188,7 +201,7 @@ d3.csv("expense.csv", function(error, data){
 		var weekdays_sum = 0;
 		
 		var full_color = "blue";
-		var weekdays_color = "green";
+		var weekdays_color = "#B8860B";
 		
 		for(x in keys) { 
 			full_sum += +d[keys[x]];
