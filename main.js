@@ -10,16 +10,21 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 		.style("fill", function(d) { return d.color; } )
 		.on("mouseover", function(d){
 			
+			// Color transition
 			d3.select(this).transition()
 				.duration(200)
 				.style("fill", "black");
-				
+			
+			// Opacity transition
 			tooltip.transition().duration(200)
 					.style("opacity", 0.9);
 			
-			tooltip.html(
-				"<strong>Total:</strong> <span style='color:red'>" + d.total + "</span>"
-			)
+			// HTML Text in the label
+			html_total = "<strong>Total: </strong>"
+			html_span = "<span style = 'color: " + d.color + "'>" + d.total + "</span>"
+			
+			// Add HTML Text to Tooltip
+			tooltip.html(html_total + html_span)
 			.style("left", (d3.event.pageX) + "px")
 			.style("top", (d3.event.pageY - 28) + "px");
 		})
