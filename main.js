@@ -30,8 +30,8 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 				var profit_color = d.profit < 0 ? "red" : "green";
 				var overall_profit_color = d.overall_profit < 0 ? "red" : "green";
 				
-				var html_profit = "<br><strong>Profit: </strong><span style = 'color: " ;
-				var html_overall_profit = "<br><strong>Overall: </strong>";
+				var html_profit = "<br><strong>Profit: </strong><span style = 'color: " + profit_color + "'>" + d.profit + "</span>";
+				var html_overall_profit = "<br><strong>Overall: </strong><span style = 'color: " + overall_profit_color + "'>" + d.overall_profit + "</span>";
 				html_text += html_profit + html_overall_profit;
 				
 			}
