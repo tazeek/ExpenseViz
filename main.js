@@ -1,3 +1,41 @@
+function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
+	
+	svg.selectAll("." + class_name)
+		.data(data)
+		.enter().append("circle")
+		.attr("class", class_name)
+		.attr("r", 5)
+		.attr("cx", xMap)
+		.attr("cy", yMap)
+		.style("fill", function(d) { return d.color; } )
+		.on("mouseover", function(d){
+			
+			d3.select(this).transition()
+				.duration(200)
+				.style("fill", "black");
+				
+			tooltip.transition().duration(200)
+					.style("opacity", 0.9);
+			
+			tooltip.html(
+				"<strong>Total:</strong> <span style='color:red'>" + d.total + "</span>"
+			)
+			.style("left", (d3.event.pageX) + "px")
+			.style("top", (d3.event.pageY - 28) + "px");
+		})
+		.on("mouseout", function(d) {
+			
+			d3.select(this).transition()
+				.duration(0)
+				.style("fill", function (d) {
+					return d.color; 
+			})
+			
+			tooltip.transition().duration(200)
+					.style("opacity", 0);
+		});
+}
+
 function drawLine(svg, data, class_name, valueline, color) {
 	
 	svg.append("path")
@@ -64,7 +102,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 		.attr("height", height)
 		.attr("fill", "#FFFFE0");
 	
-	// Plot X-Axis first 
+	// Plot X-Axis 
 	svg.append("g")
 		.attr("class", "x axis")
 		.attr("transform", "translate(0," + height + ")")
@@ -77,7 +115,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 		.style("text-anchor", "middle")
 		.text("Week Number");
 		
-	// Plot Y-Axis next 
+	// Plot Y-Axis 
 	svg.append("g")
 		.attr("class", "y axis")
 		.call(yAxis)
@@ -112,75 +150,8 @@ function plotScatter(full_data, weekdays_data, budget) {
 	
 	// SCATTER PLOT STARTS HERE
 	
-	//Full week circles 
-	svg.selectAll(".full")
-		.data(full_data)
-		.enter().append("circle")
-		.attr("class", "full")
-		.attr("r", 5)
-		.attr("cx", xMap)
-		.attr("cy", yMap)
-		.style("fill", function(d) { return d.color; } )
-		.on("mouseover", function(d){
-			
-			d3.select(this).transition()
-				.duration(200)
-				.style("fill", "black");
-				
-			tooltip.transition().duration(200)
-					.style("opacity", 0.9);
-			
-			tooltip.html(
-				"<strong>Total:</strong> <span style='color:red'>" + d.total + "</span>"
-			)
-			.style("left", (d3.event.pageX) + "px")
-			.style("top", (d3.event.pageY - 28) + "px");
-		})
-		.on("mouseout", function(d) {
-			
-			d3.select(this).transition()
-				.duration(0)
-				.style("fill", function (d) {
-					return d.color; 
-			})
-			
-			tooltip.transition().duration(200)
-					.style("opacity", 0);
-		});
-		
-	// Weekdays circles 
-	svg.selectAll(".weekdays")
-		.data(weekdays_data)
-		.enter().append("circle")
-		.attr("class", "weekdays")
-		.attr("r", 5)
-		.attr("cx", xMap)
-		.attr("cy", yMap)
-		.style("fill", function(d) { return d.color; })
-		.on("mouseover", function(d){
-			d3.select(this).transition()
-				.duration(200)
-				.style("fill", "black");
-				
-			tooltip.transition().duration(200)
-					.style("opacity", 0.9);
-
-			tooltip.html(
-				"<strong>Total:</strong> <span style='color:red'>" + d.total + "</span>"
-			)
-			.style("left", (d3.event.pageX) + "px")
-			.style("top", (d3.event.pageY - 28) + "px");
-		})
-		.on("mouseout", function(d) { 
-			d3.select(this).transition()
-				.duration(0)
-				.style("fill", function (d) {
-					return d.color; 
-			});
-			
-			tooltip.transition().duration(200)
-					.style("opacity", 0);
-		});
+	drawCircles(svg, full_data, "full", xMap, yMap, tooltip)
+	drawCircles(svg, weekdays_data, "weekdays", xMap, yMap, tooltip)
 		
 	// SCATTER PLOT ENDS HERE 
 		
