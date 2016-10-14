@@ -1,3 +1,14 @@
+function drawLine(svg, data, class_name, valueline, color) {
+	
+	svg.append("path")
+		.attr("class", class_name)
+        .attr("d", valueline(data))
+		.attr("stroke", color)
+		.attr("stroke-width", 2)
+		.attr("fill", "none");
+		
+}
+
 function plotScatter(full_data, weekdays_data, budget) {
 	
 	// Get the maximum spent in a week and round to nearest 10
@@ -93,22 +104,9 @@ function plotScatter(full_data, weekdays_data, budget) {
 					.y(function(data) { return yScale(data.total); });
 	
 	// LINE PLOTS STARTS HERE 
-						
-	// Draw the line (Full week)
-	svg.append("path")
-		.attr("class", "full_line")
-        .attr("d", valueline(full_data))
-		.attr("stroke", "steelblue")
-		.attr("stroke-width", 2)
-		.attr("fill", "none");
-		
-	// Draw the line (Weekdays only)
-	svg.append("path")
-		.attr("class", "weekdays_line")
-		.attr("d", valueline(weekdays_data))
-		.attr("stroke", "green")
-		.attr("stroke-width", 2)
-		.attr("fill", "none");
+	
+	drawLine(svg, full_data, "full_line", valueline, "steelblue");
+	drawLine(svg, weekdays_data, "weekdays_line", valueline, "green");
 		
 	// LINE PLOTS ENDS HERE
 	
