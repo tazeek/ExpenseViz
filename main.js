@@ -75,16 +75,17 @@ function drawLine(svg, data, class_name, valueline, color) {
 		
 }
 
-function drawLegend(svg, width) {
+function drawLegend(svg, width, height) {
 	
 	// Give array
-	var legend_data = [ { "color": "red", "text":"Overbudger"}, {"color":"blue", "text":"Full week"}, {"color": "#B8860B", "text":"Weekdays"}];
+	var legend_data = [ { "color": "red", "text":"Overbudget"}, {"color":"blue", "text":"Full week"}, {"color": "#B8860B", "text":"Weekdays"}];
+	
 	// Draw Legend
 	var legend = svg.selectAll(".legend")
 					.data(legend_data)
 					.enter().append("g")
 					.attr("class", "legend")
-					.attr("transform", function(d, i) { return "translate(" + (-width + 20) + "," + i * 20 + ")"; });
+					.attr("transform", function(d, i) { return "translate(" + (-width + 40) + "," + (i * 25 + (height - 80)) + ")"; });
 					
 	// Draw legend colored rectangles
 	legend.append("rect")
@@ -92,6 +93,14 @@ function drawLegend(svg, width) {
 		.attr("width", 18)
 		.attr("height", 18)
 		.style("fill", function(d) { return d.color; });
+		
+	// Add Text 
+	legend.append("text")
+		.attr("x", width + 70)
+		.attr("y", 9)
+		.attr("dy", ".35em")
+		.style("text-anchor", "end")
+		.text(function(d) { return d.text ;});
 		
 }
 
@@ -190,7 +199,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 					.y(function(data) { return yScale(data.total); });
 					
 	// Draw Legend
-	drawLegend(svg, width);
+	drawLegend(svg, width, height);
 	
 	// LINE PLOTS STARTS HERE 
 	
