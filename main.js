@@ -75,6 +75,24 @@ function drawLine(svg, data, class_name, valueline, color) {
 		
 }
 
+function drawLegend() {
+	
+	// Draw Legend
+	var legend = svg.selectAll(".legend")
+					.data(full_data)
+					.enter().append("g")
+					.attr("class", "legend")
+					.attr("transform", function(d, i) { return "translate(" + (-width + 20) + "," + i * 20 + ")"; });
+					
+	// Draw legend colored rectangles
+	legend.append("rect")
+		.attr("x", width - 18)
+		.attr("width", 18)
+		.attr("height", 18)
+		.style("fill", function(d) { return d.color; });
+		
+}
+
 function plotScatter(full_data, weekdays_data, budget) {
 	
 	// Get the maximum spent in a week and round to nearest 10
