@@ -75,11 +75,13 @@ function drawLine(svg, data, class_name, valueline, color) {
 		
 }
 
-function drawLegend() {
+function drawLegend(svg, width) {
 	
+	// Give array
+	var legend_data = [ { "color": "red", "text":"Overbudger"}, {"color":"blue", "text":"Full week"}, {"color": "#B8860B", "text":"Weekdays"}];
 	// Draw Legend
 	var legend = svg.selectAll(".legend")
-					.data(full_data)
+					.data(legend_data)
 					.enter().append("g")
 					.attr("class", "legend")
 					.attr("transform", function(d, i) { return "translate(" + (-width + 20) + "," + i * 20 + ")"; });
@@ -186,6 +188,9 @@ function plotScatter(full_data, weekdays_data, budget) {
 	var valueline = d3.svg.line()
 					.x(function(data) { return xScale(data.week_number); })
 					.y(function(data) { return yScale(data.total); });
+					
+	// Draw Legend
+	drawLegend(svg, width);
 	
 	// LINE PLOTS STARTS HERE 
 	
