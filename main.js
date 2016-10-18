@@ -12,10 +12,7 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 			.attr("cx", xMap)
 			.attr("cy", yMap)
 			.attr("fill", function(d) { return d.color; } )
-			.attr("opacity", 0)
-			.transition().duration(5000)
-			.attr("opacity", 0.5);
-		
+			.attr("opacity", 0);
 		
 	circles.on("mouseover", function(d){
 			
@@ -69,6 +66,7 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 
 function drawLine(svg, data, class_name, valueline, color) {
 	
+	var ended = true;
 	// Draw the path
 	var path = svg.append("path")
 				.attr("class", class_name)
@@ -87,20 +85,35 @@ function drawLine(svg, data, class_name, valueline, color) {
 		.transition()
         .duration(2000)
         .ease("linear")
-        .attr("stroke-dashoffset", 0);
+        .attr("stroke-dashoffset", 0)
+		.each("end", function(){
+			
+			svg.selectAll("circle").transition()
+				.duration(1000)
+				.attr("opacity", 0.5);
+				
+			svg.selectAll(".legend").transition()
+				.duration(1000)
+				.attr("opacity",1);
+		});
 }
 
 function drawLegend(svg, width, height) {
 	
 	// Give array
-	var legend_data = [ { "color": "red", "text":"Overbudget"}, {"color":"blue", "text":"Full week"}, {"color": "#B8860B", "text":"Weekdays"}];
+	var legend_data = [ { "color": "red", "text":"Overbudget"}, 
+						{"color":"blue", "text":"Full week"}, 
+						{"color": "#B8860B", "text":"Weekdays"}];
 	
 	// Draw Legend
 	var legend = svg.selectAll(".legend")
 					.data(legend_data)
 					.enter().append("g")
 					.attr("class", "legend")
-					.attr("transform", function(d, i) { return "translate(" + (-width + 40) + "," + (i * 25 + (height - 80)) + ")"; });
+					.attr("opacity",0)
+					.attr("transform", function(d, i) { 
+						return "translate(" + (-width + 40) + "," + (i * 25 + (height - 80)) + ")"; 
+					});
 					
 	// Draw legend colored rectangles
 	legend.append("rect")
@@ -216,22 +229,17 @@ function plotScatter(full_data, weekdays_data, budget) {
 	// Draw Legend
 	drawLegend(svg, width, height);
 	
+	// SCATTER PLOT 
+	
+	drawCircles(svg, full_data, "full", xMap, yMap, tooltip)
+	drawCircles(svg, weekdays_data, "weekdays", xMap, yMap, tooltip)
+	
 	// LINE PLOTS STARTS HERE 
 	
 	drawLine(svg, full_data, "full_line", valueline, "steelblue");
 	drawLine(svg, weekdays_data, "weekdays_line", valueline, "#B8860B");
-		
-	// LINE PLOTS ENDS HERE
-	
-	// SCATTER PLOT STARTS HERE
-	
-	drawCircles(svg, full_data, "full", xMap, yMap, tooltip)
-	drawCircles(svg, weekdays_data, "weekdays", xMap, yMap, tooltip)
-		
-	// SCATTER PLOT ENDS HERE 
-		
-		
-	return 
+				
+	return; 
 		
 }
 				
