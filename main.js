@@ -98,6 +98,28 @@ function drawLine(svg, data, class_name, valueline, color) {
 		});
 }
 
+function legendEffect(d, i){
+	
+	// Extract text from data 
+	var text = d.text
+	
+	switch(text){
+		
+		case "Overbudget":
+			console.log(i);
+			break;
+			
+		case "Full week":
+			console.log(i);
+			break;
+			
+		case "Weekdays":
+			console.log(i);
+			break;
+		
+	}
+}
+
 function drawLegend(svg, width, height) {
 	
 	// Give array
@@ -120,7 +142,8 @@ function drawLegend(svg, width, height) {
 		.attr("x", width - 18)
 		.attr("width", 18)
 		.attr("height", 18)
-		.style("fill", function(d) { return d.color; });
+		.style("fill", function(d) { return d.color; })
+		.on("mouseover", legendEffect);
 		
 	// Add Text 
 	legend.append("text")
@@ -128,7 +151,8 @@ function drawLegend(svg, width, height) {
 		.attr("y", 9)
 		.attr("dy", ".35em")
 		.style("text-anchor", "end")
-		.text(function(d) { return d.text ;});
+		.text(function(d) { return d.text ;})
+		.on("mouseover", legendEffect);
 		
 }
 
