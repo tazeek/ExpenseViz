@@ -66,7 +66,6 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 
 function drawLine(svg, data, class_name, valueline, color) {
 	
-	var ended = true;
 	// Draw the path
 	var path = svg.append("path")
 				.attr("class", class_name)
@@ -96,26 +95,54 @@ function drawLine(svg, data, class_name, valueline, color) {
 				.duration(1000)
 				.attr("opacity",1);
 		});
+		
 }
 
-function legendEffect(d, i){
+function legendEffect(d, hover){
 	
 	// Extract text from data 
-	var text = d.text
+	var text = d.text;
+	var opacity = 0.5;
+	
+	// Set opacity value depending on hovering or not
+	if(hover) {
+		opacity = 1;
+	}
 	
 	switch(text){
 		
-		case "Overbudget":
-			console.log(i);
+		case "Overbudget": {
+			
 			break;
 			
-		case "Full week":
-			console.log(i);
+		}
+			
+		case "Full week": {
+			
+			d3.select(".full_line").transition()
+				.duration(200)
+				.attr("opacity", opacity);
+				
+			d3.selectAll(".full").transition()
+				.duration(200)
+				.attr("opacity", opacity);
+
+			break;
+		}
+			
+		case "Weekdays": {
+			
+			d3.select(".weekdays_line").transition()
+				.duration(200)
+				.attr("opacity", opacity);
+				
+			d3.selectAll(".weekdays").transition()
+				.duration(200)
+				.attr("opacity", opacity);
+				
 			break;
 			
-		case "Weekdays":
-			console.log(i);
-			break;
+		}
 		
 	}
 }
@@ -143,7 +170,12 @@ function drawLegend(svg, width, height) {
 		.attr("width", 18)
 		.attr("height", 18)
 		.style("fill", function(d) { return d.color; })
-		.on("mouseover", legendEffect);
+		.on("mouseover", function(d){
+			legendEffect(d, true);
+		})
+		.on("mouseout", function(d) {
+			legendEffect(d, false);
+		});
 		
 	// Add Text 
 	legend.append("text")
@@ -152,7 +184,12 @@ function drawLegend(svg, width, height) {
 		.attr("dy", ".35em")
 		.style("text-anchor", "end")
 		.text(function(d) { return d.text ;})
-		.on("mouseover", legendEffect);
+		.on("mouseover", function(d){
+			legendEffect(d, true);
+		})
+		.on("mouseout", function(d){
+			legendEffect(d, false);
+		});
 		
 }
 
@@ -262,6 +299,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 	
 	drawLine(svg, full_data, "full_line", valueline, "steelblue");
 	drawLine(svg, weekdays_data, "weekdays_line", valueline, "#B8860B");
+	
 				
 	return; 
 		
