@@ -4,19 +4,19 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 	var width = "60px";
 	var tooltip_gap = 28
 	
-	// Store in circles variable 
 	var circles = svg.selectAll("." + class_name).data(data);
 	
-	// Draw Circles
 	circles.enter().append("circle")
 			.attr("class", class_name)
 			.attr("r", 5)
 			.attr("cx", xMap)
 			.attr("cy", yMap)
 			.attr("fill", function(d) { return d.color; } )
+			.attr("opacity", 0)
+			.transition().duration(5000)
 			.attr("opacity", 0.5);
 		
-	// Handle events on circles	
+		
 	circles.on("mouseover", function(d){
 			
 		// Color transition
@@ -54,8 +54,7 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 		.style("height", height)
 		.style("width", width);
 			
-	})
-	.on("mouseout", function(d) {
+	}).on("mouseout", function(d) {
 			
 		d3.select(this).transition()
 			.duration(0)
