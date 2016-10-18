@@ -186,26 +186,30 @@ function drawLegend(svg, width, height) {
 		.attr("x", width - 18)
 		.attr("width", 18)
 		.attr("height", 18)
-		.style("fill", function(d) { return d.color; })
-		.on("mouseover", function(d){
-			legendEffect(d, true);
-		})
-		.on("mouseout", function(d) {
-			legendEffect(d, false);
-		});
+		.style("fill", function(d) { return d.color; });
 		
 	// Add Text 
 	legend.append("text")
-		.attr("x", width + 70)
-		.attr("y", 9)
+		.attr("x", width + 12)
+		.attr("y", 10)
 		.attr("dy", ".35em")
-		.style("text-anchor", "end")
-		.text(function(d) { return d.text ;})
-		.on("mouseover", function(d){
+		.style("font-size", "small")
+		.style("text-anchor", "start")
+		.text(function(d) { return d.text ;});
+		
+	legend.on("mouseover", function(d) {
+		
+			d3.select(this).style("font-weight", "bold")
+				.style("font-size", "12px");
+				
 			legendEffect(d, true);
-		})
-		.on("mouseout", function(d){
+			
+		}).on("mouseout", function(d) {
+			d3.select(this).style("font-weight", "normal")
+				.style("font-size", "small");
+			
 			legendEffect(d, false);
+			
 		});
 		
 }
