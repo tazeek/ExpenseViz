@@ -31,10 +31,9 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 			
 			if("profit" in d){
 				
-				var profit_color = d.profit < 0 ? "red" : "green";
 				var overall_profit_color = d.overall_profit < 0 ? "red" : "green";
 				
-				var html_profit = "<br><strong>Profit: </strong><span style = 'color: " + profit_color + "'>" + d.profit + "</span>";
+				var html_profit = "<br><strong>Profit: </strong><span style = 'color: " + d.color + "'>" + d.profit + "</span>";
 				var html_overall_profit = "<br><strong>Overall: </strong><span style = 'color: " + overall_profit_color + "'>" + d.overall_profit + "</span>";
 				html_text += html_profit + html_overall_profit;
 				
@@ -66,13 +65,24 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 
 function drawLine(svg, data, class_name, valueline, color) {
 	
-	svg.append("path")
-		.attr("class", class_name)
-        .attr("d", valueline(data))
-		.attr("stroke", color)
-		.attr("stroke-width", 2)
-		.attr("fill", "none");
-		
+	// Draw the path
+	var path = svg.append("path")
+				.attr("class", class_name)
+				.attr("d", valueline(data))
+				.attr("stroke", color)
+				.attr("stroke-width", 2)
+				.attr("fill", "none");
+	
+	// Get total length of the path 
+	var totalLength = path.node().getTotalLength();
+	
+	// Animate the drawn path
+	path.attr("stroke-dasharray", totalLength + " " + totalLength)
+		.attr("stroke-dashoffset", totalLength)
+		.transition()
+        .duration(2000)
+        .ease("linear")
+        .attr("stroke-dashoffset", 0);
 }
 
 function drawLegend(svg, width, height) {
