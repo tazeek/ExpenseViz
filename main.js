@@ -8,7 +8,7 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 	
 	circles.enter().append("circle")
 			.attr("class", class_name)
-			.attr("r", 5)
+			.attr("r", 4)
 			.attr("cx", xMap)
 			.attr("cy", yMap)
 			.attr("fill", function(d) { return d.color; } )
@@ -102,17 +102,30 @@ function legendEffect(d, hover){
 	
 	// Extract text from data 
 	var text = d.text;
+	
+	// Variables affected 
 	var opacity = 0.5;
+	var stroke_width = 2;
+	var radius = 4
 	
 	// Set opacity value depending on hovering or not
 	if(hover) {
+		
 		opacity = 1;
+		stroke_width = 4;
+		radius = 6;
+		
 	}
 	
 	switch(text){
 		
 		case "Overbudget": {
 			
+			var red_circles = d3.selectAll(".full").filter( 
+				function() { return d3.select(this).attr("fill") == "red"; 
+			});
+			
+			red_circles.attr("r", radius).attr("opacity", opacity);
 			break;
 			
 		}
@@ -121,11 +134,13 @@ function legendEffect(d, hover){
 			
 			d3.select(".full_line").transition()
 				.duration(200)
-				.attr("opacity", opacity);
+				.attr("opacity", opacity)
+				.attr("stroke-width", stroke_width);
 				
 			d3.selectAll(".full").transition()
 				.duration(200)
-				.attr("opacity", opacity);
+				.attr("opacity", opacity)
+				.attr("r", radius);
 
 			break;
 		}
@@ -134,11 +149,13 @@ function legendEffect(d, hover){
 			
 			d3.select(".weekdays_line").transition()
 				.duration(200)
-				.attr("opacity", opacity);
+				.attr("opacity", opacity)
+				.attr("stroke-width", stroke_width);
 				
 			d3.selectAll(".weekdays").transition()
 				.duration(200)
-				.attr("opacity", opacity);
+				.attr("opacity", opacity)
+				.attr("r", radius);
 				
 			break;
 			
@@ -297,7 +314,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 	
 	// LINE PLOTS STARTS HERE 
 	
-	drawLine(svg, full_data, "full_line", valueline, "steelblue");
+	drawLine(svg, full_data, "full_line", valueline, "blue");
 	drawLine(svg, weekdays_data, "weekdays_line", valueline, "#B8860B");
 	
 				
