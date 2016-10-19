@@ -166,6 +166,15 @@ function legendEffect(d, hover){
 
 function drawLegend(svg, width, height) {
 	
+	// Create legend box
+	svg.append("rect")
+		.attr("class", "legend-box")
+		.attr("x", 15)
+		.attr("y", height - 85)
+		.attr("width", 120)
+		.attr("height", 80)
+		.style("fill", "green");
+	
 	// Give array
 	var legend_data = [ { "color": "red", "text":"Overbudget"}, 
 						{"color":"blue", "text":"Full week"}, 
@@ -198,7 +207,7 @@ function drawLegend(svg, width, height) {
 		.text(function(d) { return d.text ;});
 		
 	legend.on("mouseover", function(d) {
-		
+			
 			d3.select(this).style("font-weight", "bold")
 				.style("font-size", "12px");
 				
