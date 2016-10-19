@@ -129,7 +129,15 @@ function legendEffect(d, hover){
 				function() { return d3.select(this).attr("fill") == "red"; 
 			});
 			
-			red_circles.attr("r", radius).attr("opacity", opacity);
+			red_circles.transition().duration(200)
+				.attr("r", radius)
+				.attr("opacity", opacity);
+				
+			d3.select(".budget").transition()
+				.duration(200)
+				.attr("opacity", opacity)
+				.attr("stroke-width", stroke_width);
+			
 			break;
 			
 		}
@@ -311,6 +319,9 @@ function plotScatter(full_data, weekdays_data, budget) {
 	// Draw budget line 
 	svg.append("line")
 		.style("stroke","red")
+		.style("stroke-width", 2)
+		.attr("opacity", 0.5)
+		.attr("class", "budget")
 		.attr("x1", xScale(1))
 		.attr("y1", yScale(budget))
 		.attr("x2", xScale(x_ticks))
