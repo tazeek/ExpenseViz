@@ -94,6 +94,10 @@ function drawLine(svg, data, class_name, valueline, color) {
 			svg.selectAll(".legend").transition()
 				.duration(1000)
 				.attr("opacity",1);
+				
+			svg.select(".legend-box").transition()
+				.duration(500)
+				.attr("opacity", 1);
 		});
 		
 }
@@ -173,7 +177,7 @@ function drawLegend(svg, width, height) {
 		.attr("y", height - 85)
 		.attr("width", 120)
 		.attr("height", 80)
-		.style("fill", "green");
+		.attr("opacity", 0);
 	
 	// Give array
 	var legend_data = [ { "color": "red", "text":"Overbudget"}, 
