@@ -12,7 +12,7 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 			.attr("cx", xMap)
 			.attr("cy", yMap)
 			.attr("fill", function(d) { return d.color; } )
-			.attr("opacity", 0);
+			.attr("opacity", 0.5);
 		
 	circles.on("mouseover", function(d){
 			
@@ -86,10 +86,6 @@ function drawLine(svg, data, class_name, valueline, color) {
         .ease("linear")
         .attr("stroke-dashoffset", 0)
 		.each("end", function(){
-			
-			svg.selectAll("circle").transition()
-				.duration(1000)
-				.attr("opacity", 0.5);
 				
 			svg.selectAll(".legend").transition()
 				.duration(1000)
@@ -98,6 +94,7 @@ function drawLine(svg, data, class_name, valueline, color) {
 			svg.select(".legend-box").transition()
 				.duration(500)
 				.attr("opacity", 1);
+				
 		});
 		
 }
@@ -334,16 +331,16 @@ function plotScatter(full_data, weekdays_data, budget) {
 					
 	// Draw Legend
 	drawLegend(svg, width, height);
+					
+	// LINE PLOTS  
+	
+	drawLine(svg, full_data, "full_line", valueline, "blue");
+	drawLine(svg, weekdays_data, "weekdays_line", valueline, "#B8860B");
 	
 	// SCATTER PLOT 
 	
 	drawCircles(svg, full_data, "full", xMap, yMap, tooltip)
 	drawCircles(svg, weekdays_data, "weekdays", xMap, yMap, tooltip)
-	
-	// LINE PLOTS STARTS HERE 
-	
-	drawLine(svg, full_data, "full_line", valueline, "blue");
-	drawLine(svg, weekdays_data, "weekdays_line", valueline, "#B8860B");
 	
 				
 	return; 
