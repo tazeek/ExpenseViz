@@ -12,55 +12,56 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 			.attr("cx", xMap)
 			.attr("cy", yMap)
 			.attr("fill", function(d) { return d.color; } )
-			.attr("opacity", 0.5);
+			.attr("opacity", 0.5)
+			.on("mouseover", function(d){
 		
-	circles.on("mouseover", function(d){
-			
-		// Color transition
-		d3.select(this).transition()
-			.duration(200)
-			.style("fill", "black");
+				// Color transition
+				d3.select(this).transition()
+					.duration(200)
+					.style("fill", "black");
+				
+				// Opacity transition
+				tooltip.transition().duration(200)
+						.style("opacity", 0.9);
+				
+				// HTML Text in the label
+				var html_text = "";
+				var html_total = "<strong>Total: </strong>";
+				var html_span = "<span style = 'color: " + d.color + "'>" + d.total + "</span>";
+				html_text = html_total + html_span;
+				
+				if("profit" in d){
+					
+					var overall_profit_color = d.overall_profit < 0 ? "red" : "green";
+					
+					var html_profit = "<br><strong>Profit: </strong><span style = 'color: " + d.color + "'>" + d.profit + "</span>";
+					var html_overall_profit = "<br><strong>Overall: </strong><span style = 'color: " + overall_profit_color + "'>" + d.overall_profit + "</span>";
+					html_text += html_profit + html_overall_profit;
+					
+					height = "40px";
+					width = "70px";
+					tooltip_gap = 50
+				}
+				
+				// Add HTML Text to Tooltip
+				tooltip.html(html_text)
+				.style("left", (d3.event.pageX - 15) + "px")
+				.style("top", (d3.event.pageY - tooltip_gap) + "px")
+				.style("height", height)
+				.style("width", width);
+				
+			})
+				
+			.on("mouseout", function(d) {
 		
-		// Opacity transition
-		tooltip.transition().duration(200)
-				.style("opacity", 0.9);
-		
-		// HTML Text in the label
-		var html_text = "";
-		var html_total = "<strong>Total: </strong>";
-		var html_span = "<span style = 'color: " + d.color + "'>" + d.total + "</span>";
-		html_text = html_total + html_span;
-		
-		if("profit" in d){
-			
-			var overall_profit_color = d.overall_profit < 0 ? "red" : "green";
-			
-			var html_profit = "<br><strong>Profit: </strong><span style = 'color: " + d.color + "'>" + d.profit + "</span>";
-			var html_overall_profit = "<br><strong>Overall: </strong><span style = 'color: " + overall_profit_color + "'>" + d.overall_profit + "</span>";
-			html_text += html_profit + html_overall_profit;
-			
-			height = "40px";
-			width = "70px";
-			tooltip_gap = 50
-		}
-		
-		// Add HTML Text to Tooltip
-		tooltip.html(html_text)
-		.style("left", (d3.event.pageX - 15) + "px")
-		.style("top", (d3.event.pageY - tooltip_gap) + "px")
-		.style("height", height)
-		.style("width", width);
-			
-	}).on("mouseout", function(d) {
-			
-		d3.select(this).transition()
-			.duration(0)
-			.style("fill", function (d) {
-				return d.color; 
-		})
-		
-		tooltip.transition().duration(200)
-				.style("opacity", 0);
+				d3.select(this).transition()
+					.duration(0)
+					.style("fill", function (d) {
+						return d.color; 
+				})
+				
+				tooltip.transition().duration(200)
+						.style("opacity", 0);
 	});
 }
 
@@ -83,7 +84,7 @@ function drawLine(svg, data, class_name, valueline, color) {
 	path.attr("stroke-dasharray", totalLength + " " + totalLength)
 		.attr("stroke-dashoffset", totalLength)
 		.transition()
-        .duration(5000)
+        .duration(2000)
 		.ease(d3.easeLinear)
         .attr("stroke-dashoffset", 0)
 		.on("end", function(){
