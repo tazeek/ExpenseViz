@@ -74,6 +74,7 @@ function drawLine(svg, data, class_name, valueline, color) {
 				.attr("stroke-width", 2)
 				.attr("fill", "none")
 				.attr("opacity", 0.5);
+			
 	
 	// Get total length of the path 
 	var totalLength = path.node().getTotalLength();
@@ -82,21 +83,20 @@ function drawLine(svg, data, class_name, valueline, color) {
 	path.attr("stroke-dasharray", totalLength + " " + totalLength)
 		.attr("stroke-dashoffset", totalLength)
 		.transition()
-        .duration(2000)
-        .ease("linear")
+        .duration(5000)
+		.ease(d3.easeLinear)
         .attr("stroke-dashoffset", 0)
-		.each("end", function(){
-				
+		.on("end", function(){
+			
 			svg.selectAll(".legend").transition()
-				.duration(1000)
-				.attr("opacity",1);
-				
+			.duration(1000)
+			.attr("opacity",1);
+			
 			svg.select(".legend-box").transition()
 				.duration(500)
-				.attr("opacity", 1);
+				.attr("opacity", 1);	
 				
 		});
-		
 }
 
 function legendEffect(d, hover){
@@ -258,7 +258,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 	
 	// Plot Y-Axis values
 	var yScale = d3.scaleLinear().range([height,0]);
-	var yAxis = d3.axisLeft().ticks(y_ticks);
+	var yAxis = d3.axisLeft().scale(yScale).ticks(y_ticks);
 	var yValue = function(data) { return data["total"]; }
 	var yMap = function(data) { return yScale(yValue(data)); }
 	
@@ -325,7 +325,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 		.attr("y2", yScale(budget));
 		
 	// Define the line first 
-	var valueline = d3.svg.line()
+	var valueline = d3.line()
 					.x(function(data) { return xScale(data.week_number); })
 					.y(function(data) { return yScale(data.total); });
 					
