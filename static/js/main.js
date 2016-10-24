@@ -248,22 +248,22 @@ function plotScatter(full_data, weekdays_data, budget) {
 	var height = 540 - margin.top - margin.bottom;
 	
 	// Plot X-Axis values 
-	var xScale = d3.scale.linear().range([0, width]);
-	var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(x_ticks);
+	var xScale = d3.scaleLinear().range([0, width]);
+	var xAxis = d3.axisBottom().scale(xScale).ticks(x_ticks);
 	var xValue = function(data) { return data.week_number;}
 	var xMap = function(data) { return xScale(xValue(data));}
 	
 	// Grid lines for X-Axis 
-	xAxis.innerTickSize(-height).outerTickSize(0).tickPadding(10);
+	xAxis.tickSizeInner(-height).tickSizeOuter(0).tickPadding(10);
 	
 	// Plot Y-Axis values
-	var yScale = d3.scale.linear().range([height,0]);
-	var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(y_ticks);
+	var yScale = d3.scaleLinear().range([height,0]);
+	var yAxis = d3.axisLeft().ticks(y_ticks);
 	var yValue = function(data) { return data["total"]; }
 	var yMap = function(data) { return yScale(yValue(data)); }
 	
 	// Grid lines for Y-Axis
-	yAxis.innerTickSize(-width).outerTickSize(0).tickPadding(10);
+	yAxis.tickSizeInner(-width).tickSizeOuter(0).tickPadding(10);
 	
 	// Prepare Tooltip
 	var tooltip = d3.select("body").append("div")
@@ -350,7 +350,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 // Load the data 
 // NOTE: This is the function to be replaced by Python's Flask
 // NOTE: Refer to example.py for data processing
-d3.csv("expense.csv", function(error, data){
+d3.csv("static/js/expense.csv", function(error, data){
 	
 	// Get Keys and remove 'week' from the keys
 	keys = d3.keys(data[0]);
