@@ -351,7 +351,10 @@ function plotScatter(full_data, weekdays_data, budget) {
 // Load the data 
 // NOTE: This is the function to be replaced by Python's Flask
 // NOTE: Refer to example.py for data processing
-d3.csv("static/js/expense.csv", function(error, data){
+function preProcess(error, data){
+	
+	// If error, then throw error 
+	if(error) throw error;
 	
 	// Get Keys and remove 'week' from the keys
 	keys = d3.keys(data[0]);
@@ -425,6 +428,10 @@ d3.csv("static/js/expense.csv", function(error, data){
 	plotScatter(weeks_array, weekdays_array, budget);
 	
 	return
-});
+}
+
+d3.queue()
+	.defer(d3.csv, "static/js/expense.csv")
+	.await(preProcess);
 
 //python -m http.server 8000 --bind 127.0.0.1
