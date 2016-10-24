@@ -1,14 +1,19 @@
 from flask import Flask, render_template
+import pandas as pd
 
 app = Flask(__name__, template_folder='templates')
 
-@app.route('/test')
-def test():
+@app.route('/')	
+def index():
 	return render_template('index.html')
-
-@app.route('/')
-def hello_world():
-	return 'Hello World'
+	
+@app.route('/load')
+def second_test():
+	df = pd.read_csv("expense.csv")
+	
+	file = df.to_json()
+	
+	return file
 	
 if __name__ == '__main__':
 	app.run(host='127.0.0.1', port=5000, debug=True)

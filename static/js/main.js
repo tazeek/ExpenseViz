@@ -353,6 +353,8 @@ function plotScatter(full_data, weekdays_data, budget) {
 // NOTE: Refer to example.py for data processing
 function preProcess(error, data){
 	
+	console.log("LOADED");
+	
 	// If error, then throw error 
 	if(error) throw error;
 	
@@ -431,7 +433,7 @@ function preProcess(error, data){
 }
 
 d3.queue()
-	.defer(d3.csv, "static/js/expense.csv")
+	.defer(d3.json, "/load")
 	.await(preProcess);
 
 //python -m http.server 8000 --bind 127.0.0.1
