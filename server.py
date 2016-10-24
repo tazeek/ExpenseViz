@@ -3,15 +3,17 @@ import pandas as pd
 
 app = Flask(__name__, template_folder='templates')
 
+
 @app.route('/')	
 def index():
 	return render_template('index.html')
 	
+	
 @app.route('/load')
-def second_test():
+def retrieveData():
 	df = pd.read_csv("expense.csv")
 	
-	file = df.to_json()
+	file = df.to_csv()
 	
 	return file
 	

@@ -354,6 +354,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 function preProcess(error, data){
 	
 	console.log("LOADED");
+	//console.log(data);
 	
 	// If error, then throw error 
 	if(error) throw error;
@@ -419,6 +420,7 @@ function preProcess(error, data){
 		if(x == 0){
 			overall_profit = week_json.profit
 		} else {
+			
 			//Based on previous week's overall 
 			overall_profit = week_json.profit + weeks_array[x-1].overall_profit
 		}
@@ -433,7 +435,7 @@ function preProcess(error, data){
 }
 
 d3.queue()
-	.defer(d3.json, "/load")
+	.defer(d3.csv, "/load")
 	.await(preProcess);
 
 //python -m http.server 8000 --bind 127.0.0.1
