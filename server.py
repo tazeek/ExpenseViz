@@ -11,9 +11,10 @@ def index():
 	
 @app.route('/load')
 def retrieveData():
+
 	df = pd.read_csv("expense.csv")
 	
-	file = df.to_csv()
+	file = df.to_csv(index=False)
 	
 	return file
 	

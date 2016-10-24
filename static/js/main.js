@@ -353,14 +353,13 @@ function plotScatter(full_data, weekdays_data, budget) {
 // NOTE: Refer to example.py for data processing
 function preProcess(error, data){
 	
-	console.log("LOADED");
-	//console.log(data);
-	
 	// If error, then throw error 
 	if(error) throw error;
+	console.log(data);
 	
 	// Get Keys and remove 'week' from the keys
 	keys = d3.keys(data[0]);
+	console.log(keys);
 	keys.shift();
 	
 	// Initialize variables
@@ -437,5 +436,3 @@ function preProcess(error, data){
 d3.queue()
 	.defer(d3.csv, "/load")
 	.await(preProcess);
-
-//python -m http.server 8000 --bind 127.0.0.1
