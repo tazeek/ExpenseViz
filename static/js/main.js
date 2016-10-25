@@ -279,10 +279,11 @@ function plotScatter(full_data, weekdays_data, budget) {
 	svg.append("g")
 		.attr("class", "x axis")
 		.attr("transform", "translate(0," + height + ")")
-		.call(xAxis)
-		.append("text")
+		.call(xAxis);
+		
+	svg.append("text")
 		.attr("class", "label")
-		.attr("transform", "translate(" + (width/2) + "," + margin.bottom + ")")
+		.attr("transform", "translate(" + (width/2) + "," + ( height + 50) + ")")
 		.style("font-size", "13px")
 		.style("font-weight", "bold")
 		.style("text-anchor", "middle")
@@ -291,8 +292,9 @@ function plotScatter(full_data, weekdays_data, budget) {
 	// Plot Y-Axis 
 	svg.append("g")
 		.attr("class", "y axis")
-		.call(yAxis)
-		.append("text")
+		.call(yAxis);
+		
+	svg.append("text")
 		.attr("class", "label")
 		.attr("transform", "translate("+ -70 +","+(height/2)+")rotate(-90)")
 		.attr("dy", ".71em")
