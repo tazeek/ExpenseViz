@@ -353,13 +353,15 @@ function plotScatter(full_data, weekdays_data, budget) {
 // NOTE: Refer to example.py for data processing
 function preProcess(error, data){
 	
-	// If error, then throw error 
+	weekdays_data = data;
+	
+	
+	return;
+	/* If error, then throw error 
 	if(error) throw error;
-	console.log(data);
 	
 	// Get Keys and remove 'week' from the keys
 	keys = d3.keys(data[0]);
-	console.log(keys);
 	keys.shift();
 	
 	// Initialize variables
@@ -426,7 +428,7 @@ function preProcess(error, data){
 		
 		// Store as new Key-value pair
 		week_json["overall_profit"] = overall_profit
-	}
+	}*/
 	
 	plotScatter(weeks_array, weekdays_array, budget);
 	
