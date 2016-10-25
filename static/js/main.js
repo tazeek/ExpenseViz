@@ -107,14 +107,12 @@ function legendEffect(d, hover){
 	
 	// Variables affected 
 	var opacity = 0.5;
-	var stroke_width = 2;
 	var radius = 4
 	
 	// Set opacity value depending on hovering or not
 	if(hover) {
 		
 		opacity = 1;
-		stroke_width = 4;
 		radius = 6;
 		
 	}
@@ -130,11 +128,6 @@ function legendEffect(d, hover){
 			red_circles.transition().duration(200)
 				.attr("r", radius)
 				.attr("opacity", opacity);
-				
-			d3.select(".budget").transition()
-				.duration(200)
-				.attr("opacity", opacity)
-				.attr("stroke-width", stroke_width);
 			
 			break;
 			
@@ -142,12 +135,11 @@ function legendEffect(d, hover){
 			
 		case "Full week": {
 			
-			d3.select(".full_line").transition()
-				.duration(200)
-				.attr("opacity", opacity)
-				.attr("stroke-width", stroke_width);
+			var blue_circles = d3.selectAll(".full").filter(
+				function() { return d3.select(this).attr("fill") == "blue";
+			});
 				
-			d3.selectAll(".full").transition()
+			blue_circles.transition()
 				.duration(200)
 				.attr("opacity", opacity)
 				.attr("r", radius);
@@ -156,11 +148,6 @@ function legendEffect(d, hover){
 		}
 			
 		case "Weekdays": {
-			
-			d3.select(".weekdays_line").transition()
-				.duration(200)
-				.attr("opacity", opacity)
-				.attr("stroke-width", stroke_width);
 				
 			d3.selectAll(".weekdays").transition()
 				.duration(200)
@@ -236,7 +223,7 @@ function drawLegend(svg, width, height) {
 function plotScatter(full_data, weekdays_data, budget) {
 	
 	// Get the maximum spent in a week and round to nearest 10
-	var week_max = Math.max.apply(Math,weeks_array.map(function(week){return week.total;}))
+	var week_max = Math.max.apply(Math,full_data.map(function(week){return week.total;}))
 	var week_max = Math.round(week_max / 10) * 10
 	
 	// Number of ticks
@@ -348,9 +335,6 @@ function plotScatter(full_data, weekdays_data, budget) {
 		
 }
 				
-// Load the data 
-// NOTE: This is the function to be replaced by Python's Flask
-// NOTE: Refer to example.py for data processing
 function preProcess(error, data){
 	
 	//If error, then throw error 
