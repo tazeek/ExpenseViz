@@ -353,84 +353,30 @@ function plotScatter(full_data, weekdays_data, budget) {
 // NOTE: Refer to example.py for data processing
 function preProcess(error, data){
 	
-	weekdays_data = data;
-	
-	
-	return;
-	/* If error, then throw error 
+	//If error, then throw error 
 	if(error) throw error;
-	
-	// Get Keys and remove 'week' from the keys
-	keys = d3.keys(data[0]);
-	keys.shift();
 	
 	// Initialize variables
 	weeks_array = [];
 	weekdays_array = [];
-	weekends = ["saturday","sunday"];
-	budget = 200;
 	
 	// Transferring from csv file to dictionary
 	data.forEach( function(d){
 		
-		// Calculate total
-		var full_sum = 0;
-		var weekdays_sum = 0;
-		
-		var full_color = "blue";
-		var weekdays_color = "#B8860B";
-		
-		for(x in keys) { 
-			full_sum += +d[keys[x]];
-			
-			if(!weekends.includes(keys[x])) {
-				weekdays_sum += +d[keys[x]];
-			}
-		}
-		
-		//Give color to the values
-		if(full_sum > budget) {
-			full_color = "red";
-		}
-		
-		if(weekdays_sum > budget) {
-			weekdays_color = "red";
-		}
-		
-		// Round up the sum 
-		full_sum = Math.round(full_sum);
-		weekdays_sum = Math.round(weekdays_sum);
-		
-		// Calculate profit
-		profit = budget - full_sum;
 		
 		// Make a JSON out of the statistics
-		week_stat = { "week_number": +d.week, "total": full_sum, "profit": profit, "color": full_color };
-		weekdays_stat = { "week_number": +d.week, "total": weekdays_sum, "color": weekdays_color };
+		week_stat = { "week_number": +d.week, "total": +d.week_total, 
+					"profit": +d.weekly_profit, "overall_profit": +d.overall_profit, 
+					"color": d.week_color };
+		
+		weekdays_stat = { "week_number": +d.week, "total": +d.weekdays_total, "color": d.weekdays_color };
 		
 		// Store them
 		weeks_array.push(week_stat);
 		weekdays_array.push(weekdays_stat);
 	});
 	
-	// Calculate overall profit
-	for(x in weeks_array) {
-		week_json = weeks_array[x];
-		
-		//First week 
-		if(x == 0){
-			overall_profit = week_json.profit
-		} else {
-			
-			//Based on previous week's overall 
-			overall_profit = week_json.profit + weeks_array[x-1].overall_profit
-		}
-		
-		// Store as new Key-value pair
-		week_json["overall_profit"] = overall_profit
-	}*/
-	
-	plotScatter(weeks_array, weekdays_array, budget);
+	plotScatter(weeks_array, weekdays_array, 200);
 	
 	return
 }
