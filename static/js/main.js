@@ -263,7 +263,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 	yScale.domain([0, week_max]);
 	
 	// Add graph to the canvas of the webpage
-	var svg = d3.select("body").append("svg")
+	var svg = d3.select("#chart").append("svg")
 				.attr("width", width + margin.left + margin.right)
 				.attr("height", height + margin.top + margin.bottom)
 				.append("g")
@@ -302,6 +302,16 @@ function plotScatter(full_data, weekdays_data, budget) {
 		.style("font-weight", "bold")
 		.style("text-anchor", "middle")
 		.text("Total Expenses");
+	
+	// Add Title
+	svg.append("text")
+        .attr("x", (width / 2))     
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "21px")
+		.style("font-weight", "bold")
+        .style("text-decoration", "underline")
+        .text("Weekly Expenses");
 		
 	// Draw budget line 
 	svg.append("line")

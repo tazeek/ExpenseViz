@@ -20,7 +20,7 @@ def retrieveData():
 	df = pd.read_csv("expense.csv")
 	
 	# Fill remaining days, if any, with 0
-	df.fillna(0)
+	df = df.fillna(0)
 
 	# Get all columns and remove 'week'
 	columns = list(df)
