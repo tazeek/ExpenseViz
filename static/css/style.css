@@ -2,6 +2,21 @@ body {
   font: 21px sans-serif;
   
 }
+#statistics {
+    position: absolute;
+	top: 50px;
+	text-align: center;
+	width: 200px;
+	height: 200px;
+	border: 5px solid green;
+	opacity: 1;
+}
+
+#legend-box {
+	fill: white;
+	stroke-width: 1.5;
+	stroke: black;
+}
 
 .axis path,
 .axis line {
@@ -13,12 +28,6 @@ body {
 
 .tick line{
 	opacity: 0.2;
-}
-
-.legend-box {
-	fill: white;
-	stroke-width: 1.5;
-	stroke: black;
 }
 
 div.tooltip {	

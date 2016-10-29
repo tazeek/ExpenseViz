@@ -93,9 +93,13 @@ function drawLine(svg, data, class_name, valueline, color) {
 			.duration(1000)
 			.attr("opacity",1);
 			
-			svg.select(".legend-box").transition()
+			svg.select("#legend-box").transition()
 				.duration(500)
-				.attr("opacity", 1);	
+				.attr("opacity", 1);
+			
+			d3.select("#statistics").transition()
+				.duration(500)
+				.attr("opacity", 0);
 				
 		});
 }
@@ -165,7 +169,7 @@ function drawLegend(svg, width, height) {
 	
 	// Create legend box
 	svg.append("rect")
-		.attr("class", "legend-box")
+		.attr("id", "legend-box")
 		.attr("x", 15)
 		.attr("y", height - 85)
 		.attr("width", 120)
@@ -305,7 +309,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 	
 	// Add Title
 	svg.append("text")
-        .attr("x", (width / 2))     
+        .attr("x", (width / 2) + 10)     
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
         .style("font-size", "13px")
