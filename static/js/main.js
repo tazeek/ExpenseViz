@@ -308,7 +308,7 @@ function plotScatter(full_data, weekdays_data, budget) {
         .attr("x", (width / 2))     
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
-        .style("font-size", "21px")
+        .style("font-size", "13px")
 		.style("font-weight", "bold")
         .style("text-decoration", "underline")
         .text("Weekly Expenses");
