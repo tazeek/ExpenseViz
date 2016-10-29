@@ -9,8 +9,16 @@ body {
 	text-align: center;
 	height: 140px;
 	width: 220px;
-	border-radius: 5px;
-	border-color: green;
+	background: #F5F5DC;
+	display: none;
+}
+
+#week {
+	position: absolute;
+	top: 210px;
+	text-align: center;
+	height: 270px;
+	width: 220px;
 	background: #F5F5DC;
 	display: none;
 }

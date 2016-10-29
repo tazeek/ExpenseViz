@@ -62,7 +62,11 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 				
 				tooltip.transition().duration(200)
 						.style("opacity", 0);
-	});
+			})
+			
+			.on("click", function(d,i) {
+				console.log(i);
+			});
 }
 
 function drawLine(svg, data, class_name, valueline, color) {
@@ -136,17 +140,12 @@ function getStats(full_data){
 		.style("text-align", "left")
 		.html(function(d) {
 			
-			var html_first = "<span style='color: blue;'>" + d.string + "</span>";
-			var html_second = "<span style='color: red'>" + d.amt + "</span>";
+			var html_first = "<span>" + d.string + "</span>";
+			var html_second = "<span style='color: green'>" + d.amt + "</span>";
 			
 			return html_first + html_second;
 			
 		});
-		
-	console.log(total_spent);
-	console.log(weekly_average);
-	console.log(max_exepense);
-	console.log(min_expense);
 }
 
 function legendEffect(d, hover){
