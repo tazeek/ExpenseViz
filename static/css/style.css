@@ -2,14 +2,14 @@ body {
   font: 21px sans-serif;
   
 }
-#statistics {
+#stats {
     position: absolute;
 	top: 50px;
 	text-align: center;
 	width: 200px;
-	height: 200px;
+	height: 160px;
 	border: 5px solid green;
-	opacity: 1;
+	display: none;
 }
 
 #legend-box {

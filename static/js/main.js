@@ -96,12 +96,24 @@ function drawLine(svg, data, class_name, valueline, color) {
 			svg.select("#legend-box").transition()
 				.duration(500)
 				.attr("opacity", 1);
-			
-			d3.select("#statistics").transition()
-				.duration(500)
-				.attr("opacity", 0);
+				
+			d3.select("#stats").style("display","inline");
 				
 		});
+}
+
+function getStats(full_data){
+	
+	// Statistical variables
+	var total_spent = d3.sum(full_data, function(d){ return d.total; });
+	var weekly_average = total_spent/full_data.length;
+	var max_exepense = d3.max(full_data, function(d) { return d.total; });
+	var min_expense = d3.min(full_data, function(d) { return d.total; });
+	
+	console.log(total_spent);
+	console.log(weekly_average);
+	console.log(max_exepense);
+	console.log(min_expense);
 }
 
 function legendEffect(d, hover){
@@ -335,14 +347,15 @@ function plotScatter(full_data, weekdays_data, budget) {
 					
 	// Draw Legend
 	drawLegend(svg, width, height);
-					
-	// LINE PLOTS  
 	
+	// Get Statistics
+	getStats(full_data);
+					
+	// LINE PLOT  
 	drawLine(svg, full_data, "full_line", valueline, "blue");
 	drawLine(svg, weekdays_data, "weekdays_line", valueline, "#B8860B");
 	
 	// SCATTER PLOT 
-	
 	drawCircles(svg, full_data, "full", xMap, yMap, tooltip)
 	drawCircles(svg, weekdays_data, "weekdays", xMap, yMap, tooltip)
 	
