@@ -110,6 +110,39 @@ function getStats(full_data){
 	var max_exepense = d3.max(full_data, function(d) { return d.total; });
 	var min_expense = d3.min(full_data, function(d) { return d.total; });
 	
+	// Convert to strings 
+	var html_total = "TOTAL: " + total_spent;
+	var html_average = "AVERAGE: " + weekly_average;
+	var html_min = "MINIMUM: " + min_expense;
+	var html_max = "MAXIMUM: " + max_exepense;
+	
+	// Store the strings in a JSON Array 
+	var html_list = [
+		{"string":"TOTAL: ", "amt": total_spent},
+		{"string":"AVERAGE: ", "amt": weekly_average},
+		{"string":"MINIMUM: ", "amt": min_expense},
+		{"string":"MAXIMUM: ", "amt": max_exepense }
+	];
+	
+	// Append to list 
+	var list = d3.select("#stats").append("ul");
+	
+	list.selectAll("li")
+		.data(html_list)
+		.enter()
+		.append('li')
+		.style("margin", "10px")
+		.style("font-size", "small")
+		.style("text-align", "left")
+		.html(function(d) {
+			
+			var html_first = "<span style='color: blue;'>" + d.string + "</span>";
+			var html_second = "<span style='color: red'>" + d.amt + "</span>";
+			
+			return html_first + html_second;
+			
+		});
+		
 	console.log(total_spent);
 	console.log(weekly_average);
 	console.log(max_exepense);
