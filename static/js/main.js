@@ -66,10 +66,23 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 			
 			.on("click", function(d,i) {
 				
-				d3.select("#week")
-					.style("display","inline")
-					.append("h4")
-					.text("Week " + (i+1));
+				// Select the #Week DOM
+				var week = d3.select("#week").style("display","inline");
+				week.select("h4").html("Week " + (i+1));
+				
+				// Get all the keys 
+				var keys = d3.keys(d);
+				
+				keys.forEach(function(key){
+					
+					if(key == "total"){
+						console.log(d[key]);
+					}
+					
+					if(key.search(/day/i) != -1){
+						console.log(typeof key);
+					}
+				});
 				
 			});
 }
