@@ -73,16 +73,46 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 				// Get all the keys 
 				var keys = d3.keys(d);
 				
+				// Filter keys and get the necessary key-value pairs
+				var week_stat =[];
+				
 				keys.forEach(function(key){
 					
 					if(key == "total"){
-						console.log(d[key]);
+						var string = key[0].toUpperCase() + key.substring(1) + ": ";
+						string = string.toUpperCase();
+						week_stat.push({"string": string, "value": d[key]});
 					}
 					
 					if(key.search(/day/i) != -1){
-						console.log(typeof key);
+						var day = key[0].toUpperCase() + key.substring(1) + ": ";
+						day = day.toUpperCase();
+						week_stat.push({"string": day, "value": d[key]});
 					}
 				});
+				
+				// Get average and insert it after Total
+				var average = { "string": "AVERAGE:", "value": Math.round(d.total/7) };
+				week_stat.splice(1, 0, average);
+				
+				week.select("ul").remove();
+				
+				var list = week.append("ul");
+				list.selectAll("li")
+					.data(week_stat)
+					.enter()
+					.append('li')
+					.style("margin", "10px")
+					.style("font-size", "small")
+					.style("text-align", "left")
+					.html(function(d,i){
+						
+						var html_first = "<span>" + d.string + "</span>";
+						var html_second = "<span style='color: green'>" + d.value + "</span>";
+						
+						return html_first + html_second;
+						
+					});
 				
 			});
 }
@@ -131,12 +161,6 @@ function getStats(full_data){
 	var weekly_average = total_spent/full_data.length;
 	var max_exepense = d3.max(full_data, function(d) { return d.total; });
 	var min_expense = d3.min(full_data, function(d) { return d.total; });
-	
-	// Convert to strings 
-	var html_total = "TOTAL: RM" + total_spent;
-	var html_average = "AVERAGE: RM" + weekly_average;
-	var html_min = "MINIMUM: RM" + min_expense;
-	var html_max = "MAXIMUM: RM" + max_exepense;
 	
 	// Store the strings in a JSON Array 
 	var html_list = [
