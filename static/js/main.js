@@ -65,7 +65,12 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 			})
 			
 			.on("click", function(d,i) {
-				console.log(i);
+				
+				d3.select("#week")
+					.style("display","inline")
+					.append("h4")
+					.text("Week " + (i+1));
+				
 			});
 }
 
@@ -115,10 +120,10 @@ function getStats(full_data){
 	var min_expense = d3.min(full_data, function(d) { return d.total; });
 	
 	// Convert to strings 
-	var html_total = "TOTAL: " + total_spent;
-	var html_average = "AVERAGE: " + weekly_average;
-	var html_min = "MINIMUM: " + min_expense;
-	var html_max = "MAXIMUM: " + max_exepense;
+	var html_total = "TOTAL: RM" + total_spent;
+	var html_average = "AVERAGE: RM" + weekly_average;
+	var html_min = "MINIMUM: RM" + min_expense;
+	var html_max = "MAXIMUM: RM" + max_exepense;
 	
 	// Store the strings in a JSON Array 
 	var html_list = [
@@ -131,6 +136,7 @@ function getStats(full_data){
 	// Append to list 
 	var list = d3.select("#stats").append("ul");
 	
+	// Append all the data to the list
 	list.selectAll("li")
 		.data(html_list)
 		.enter()
@@ -412,9 +418,13 @@ function preProcess(error, data){
 		// Make a JSON out of the statistics
 		week_stat = { "week_number": +d.week, "total": +d.week_total, 
 					"profit": +d.weekly_profit, "overall_profit": +d.overall_profit, 
-					"color": d.week_color };
+					"color": d.week_color, "saturday": +d.saturday, "sunday": +d.sunday,
+					"monday": +d.monday, "tuesday": +d.tuesday, "wednesday": +d.wednesday,
+					"thursday": +d.thursday, "friday": +d.friday};
 		
-		weekdays_stat = { "week_number": +d.week, "total": +d.weekdays_total, "color": d.weekdays_color };
+		weekdays_stat = { "week_number": +d.week, "total": +d.weekdays_total, "color": d.weekdays_color,
+						"monday": +d.monday, "tuesday": +d.tuesday, "wednesday": +d.wednesday,
+						"thursday": +d.thursday, "friday": +d.friday};
 		
 		// Store them
 		weeks_array.push(week_stat);
