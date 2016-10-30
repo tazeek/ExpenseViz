@@ -1,3 +1,98 @@
+function circleHover(d, circle, tooltip){
+	
+	// Color transition
+	circle.transition().duration(200)
+		.style("fill", "black");
+	
+	// Opacity transition
+	tooltip.transition().duration(200)
+			.style("opacity", 0.9);
+	
+	// HTML Text in the label
+	var html_text = "";
+	var html_total = "<strong>Total: </strong>";
+	var html_span = "<span style = 'color: " + d.color + "'>" + d.total + "</span>";
+	html_text = html_total + html_span;
+	
+	if("profit" in d){
+		
+		var overall_profit_color = d.overall_profit < 0 ? "red" : "green";
+		
+		var html_profit = "<br><strong>Profit: </strong><span style = 'color: " + d.color + "'>" + d.profit + "</span>";
+		var html_overall_profit = "<br><strong>Overall: </strong><span style = 'color: " + overall_profit_color + "'>" + d.overall_profit + "</span>";
+		html_text += html_profit + html_overall_profit;
+		
+		height = "40px";
+		width = "70px";
+		tooltip_gap = 50
+	}
+	
+	// Add HTML Text to Tooltip
+	tooltip.html(html_text)
+	.style("left", (d3.event.pageX - 15) + "px")
+	.style("top", (d3.event.pageY - tooltip_gap) + "px")
+	.style("height", height)
+	.style("width", width);
+}
+
+function clickCircle(d,i){
+	
+	// Select the #Week DOM
+	var week = d3.select("#week").style("display","inline");
+	week.select("h4").html("Week " + (i+1));
+
+	// Get all the keys 
+	var keys = d3.keys(d);
+
+	// Filter keys and get the necessary key-value pairs
+	var week_stat =[];
+	var days = 0;
+
+	keys.forEach(function(key){
+		
+		if(key == "total"){
+			var string = key[0].toUpperCase() + key.substring(1) + ": ";
+			string = string.toUpperCase();
+			week_stat.push({"string": string, "value": d[key]});
+		}
+		
+		if(key.search(/day/i) != -1){
+			var day = key[0].toUpperCase() + key.substring(1) + ": ";
+			day = day.toUpperCase();
+			week_stat.push({"string": day, "value": Math.round(d[key])});
+			days++;
+		}
+	});
+
+	// Get average and insert it after Total
+	var average = { "string": "AVERAGE:", "value": Math.round(d.total/days) };
+	week_stat.splice(1, 0, average);
+
+	// Modify the height style
+	week.style("height", (week_stat.length*30) + "px");
+
+	// Remove the existing list, if any
+	week.select("ul").remove();
+
+	var list = week.append("ul");
+	list.selectAll("li")
+		.data(week_stat)
+		.enter()
+		.append('li')
+		.style("margin", "10px")
+		.style("font-size", "small")
+		.style("text-align", "left")
+		.html(function(d,i){
+			
+			var html_first = "<span>" + d.string + "</span>";
+			var html_second = "<span style='color: green'>" + d.value + "</span>";
+			
+			return html_first + html_second;
+			
+		});
+					
+}
+
 function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 	
 	var height = "20px";
@@ -13,114 +108,25 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 			.attr("cy", yMap)
 			.attr("fill", function(d) { return d.color; } )
 			.attr("opacity", 0.5)
-			.on("mouseover", function(d){
-		
-				// Color transition
-				d3.select(this).transition()
-					.duration(200)
-					.style("fill", "black");
+			.on("mouseover", function(d) { 
 				
-				// Opacity transition
-				tooltip.transition().duration(200)
-						.style("opacity", 0.9);
-				
-				// HTML Text in the label
-				var html_text = "";
-				var html_total = "<strong>Total: </strong>";
-				var html_span = "<span style = 'color: " + d.color + "'>" + d.total + "</span>";
-				html_text = html_total + html_span;
-				
-				if("profit" in d){
-					
-					var overall_profit_color = d.overall_profit < 0 ? "red" : "green";
-					
-					var html_profit = "<br><strong>Profit: </strong><span style = 'color: " + d.color + "'>" + d.profit + "</span>";
-					var html_overall_profit = "<br><strong>Overall: </strong><span style = 'color: " + overall_profit_color + "'>" + d.overall_profit + "</span>";
-					html_text += html_profit + html_overall_profit;
-					
-					height = "40px";
-					width = "70px";
-					tooltip_gap = 50
-				}
-				
-				// Add HTML Text to Tooltip
-				tooltip.html(html_text)
-				.style("left", (d3.event.pageX - 15) + "px")
-				.style("top", (d3.event.pageY - tooltip_gap) + "px")
-				.style("height", height)
-				.style("width", width);
+				var circle = d3.select(this);
+				circleHover(d,circle, tooltip);
 				
 			})
-				
 			.on("mouseout", function(d) {
 		
-				d3.select(this).transition()
-					.duration(0)
+				d3.select(this).transition().duration(0)
 					.style("fill", function (d) {
 						return d.color; 
 				})
 				
-				tooltip.transition().duration(200)
-						.style("opacity", 0);
+				tooltip.transition().duration(200).style("opacity", 0);
 			})
 			
-			.on("click", function(d,i) {
-				
-				// Select the #Week DOM
-				var week = d3.select("#week").style("display","inline");
-				week.select("h4").html("Week " + (i+1));
-				
-				// Get all the keys 
-				var keys = d3.keys(d);
-				
-				// Filter keys and get the necessary key-value pairs
-				var week_stat =[];
-				var days = 0;
-				
-				keys.forEach(function(key){
-					
-					if(key == "total"){
-						var string = key[0].toUpperCase() + key.substring(1) + ": ";
-						string = string.toUpperCase();
-						week_stat.push({"string": string, "value": d[key]});
-					}
-					
-					if(key.search(/day/i) != -1){
-						var day = key[0].toUpperCase() + key.substring(1) + ": ";
-						day = day.toUpperCase();
-						week_stat.push({"string": day, "value": Math.round(d[key])});
-						days++;
-					}
-				});
-				
-				// Get average and insert it after Total
-				var average = { "string": "AVERAGE:", "value": Math.round(d.total/days) };
-				week_stat.splice(1, 0, average);
-				
-				// Modify the height style
-				week.style("height", (week_stat.length*30) + "px");
-				
-				// Remove the existing list, if any
-				week.select("ul").remove();
-				
-				var list = week.append("ul");
-				list.selectAll("li")
-					.data(week_stat)
-					.enter()
-					.append('li')
-					.style("margin", "10px")
-					.style("font-size", "small")
-					.style("text-align", "left")
-					.html(function(d,i){
-						
-						var html_first = "<span>" + d.string + "</span>";
-						var html_second = "<span style='color: green'>" + d.value + "</span>";
-						
-						return html_first + html_second;
-						
-					});
-				
-			});
+			.on("click", function(d,i) { clickCircle(d,i);});
+			
+	return;
 }
 
 function drawLine(svg, data, class_name, valueline, color) {
@@ -478,6 +484,7 @@ function preProcess(error, data){
 	
 	return
 }
+
 (function(){
 	d3.queue()
 		.defer(d3.csv, "/load")
