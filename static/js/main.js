@@ -75,6 +75,7 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 				
 				// Filter keys and get the necessary key-value pairs
 				var week_stat =[];
+				var days = 0;
 				
 				keys.forEach(function(key){
 					
@@ -87,12 +88,13 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 					if(key.search(/day/i) != -1){
 						var day = key[0].toUpperCase() + key.substring(1) + ": ";
 						day = day.toUpperCase();
-						week_stat.push({"string": day, "value": d[key]});
+						week_stat.push({"string": day, "value": Math.round(d[key])});
+						days++;
 					}
 				});
 				
 				// Get average and insert it after Total
-				var average = { "string": "AVERAGE:", "value": Math.round(d.total/7) };
+				var average = { "string": "AVERAGE:", "value": Math.round(d.total/days) };
 				week_stat.splice(1, 0, average);
 				
 				// Modify the height style
@@ -476,7 +478,8 @@ function preProcess(error, data){
 	
 	return
 }
-
-d3.queue()
-	.defer(d3.csv, "/load")
-	.await(preProcess);
+(function(){
+	d3.queue()
+		.defer(d3.csv, "/load")
+		.await(preProcess);
+})();
