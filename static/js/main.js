@@ -95,6 +95,10 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 				var average = { "string": "AVERAGE:", "value": Math.round(d.total/7) };
 				week_stat.splice(1, 0, average);
 				
+				// Modify the height style
+				week.style("height", (week_stat.length*30) + "px");
+				
+				// Remove the existing list, if any
 				week.select("ul").remove();
 				
 				var list = week.append("ul");
