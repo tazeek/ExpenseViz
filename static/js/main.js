@@ -329,7 +329,7 @@ function plotScatter(full_data, weekdays_data, budget) {
 	
 	// Get the maximum spent in a week and round to nearest 10
 	var week_max = Math.max.apply(Math,full_data.map(function(week){return week.total;}))
-	var week_max = Math.round(week_max / 10) * 10
+	week_max = Math.round(week_max / 10) * 10
 	
 	// Number of ticks
 	var x_ticks = full_data.length
@@ -470,7 +470,9 @@ function plotBar(full_data){
 		
 	});
 	
-	console.log(daily_total);
+	// Get the total highest amount spent in a day and round to nearest 10 
+	var daily_max = Math.max.apply(Math,daily_total.map(function(day){return day.amt;}));
+	daily_max = Math.round(daily_max / 10) * 10;
 	
 	return;
 	// For the Bar Chart
@@ -480,7 +482,7 @@ function plotBar(full_data){
 	
 	// Number of ticks
 	var x_ticks = full_data.length
-	//var y_ticks = week_max/20
+	var y_ticks = daily_max/20
 	
 	// Plot X-Axis values 
 	var xScale = d3.scaleLinear().range([0, width]);
