@@ -475,11 +475,11 @@ function plotBar(full_data){
 	var height = 540 - margin.top - margin.bottom;
 	
 	// Number of ticks
-	var x_ticks = full_data.length;
+	var x_ticks = daily_max.length;
 	var y_ticks = Math.round(daily_max/50);
 	
 	// Plot X-Axis values 
-	var xScale = d3.scaleBand().rangeRound([0, width]).padding(0.1);
+	var xScale = d3.scaleBand().rangeRound([0, width]).padding(0.05);
 	var xAxis = d3.axisBottom().scale(xScale).ticks(x_ticks);
 	
 	// Plot Y-Axis values
@@ -494,7 +494,7 @@ function plotBar(full_data){
 	var tooltip = d3.select("body").append("div").attr("class", "barTip");
 	
 	// Draw SVG
-	var svg = d3.select("#bar").append("svg")
+	var svg = d3.select("#barChart").append("svg")
 				.attr("width", width + margin.left + margin.right)
 				.attr("height", height + margin.top + margin.bottom)
 				.append("g")
@@ -529,7 +529,7 @@ function plotBar(full_data){
 		.text("Total");
 		
 	// Draw the bars
-	svg.selectAll("bar")
+	svg.selectAll(".bar")
 		.data(daily_total)
 		.enter().append("rect")
 		.attr("class", "bar")
@@ -537,6 +537,7 @@ function plotBar(full_data){
 		.attr("y", function(d) { return yScale(d.amt); })
 		.attr("width", xScale.bandwidth())
 		.attr("height", function(d) { return height - yScale(d.amt); })
+		.style("opacity", 0)
 		.on("mousemove", function(d) {
 			
 			d3.select(this).style("fill", "brown");
@@ -588,14 +589,26 @@ function preProcess(error, data){
 	return
 }
 
+function scrolling(){
+
+	if(document.body.scrollTop > 175){
+		d3.select("#barChart").style("visibility", "visible");
+	} else {
+		d3.select("#barChart").style("visibility", "hidden");
+	}
+	
+	if(document.body.scrollTop > 275){
+		d3.selectAll(".bar").transition().duration(200).style("opacity", 1);
+		d3.select("#chart").style("opacity", 0.5);
+	} else {
+		d3.selectAll(".bar").transition().duration(200).style("opacity", 0);
+		d3.select("#chart").style("opacity", 1);
+	}
+}
+
 (function(){
+	
 	d3.queue()
 		.defer(d3.csv, "/load")
 		.await(preProcess);
-		
-	window.onscroll = function(){
-		if(document.body.scrollTop > 550){
-			d3.select("#bar").attr("display","none");
-		};
-	}
 })();
