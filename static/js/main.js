@@ -13,8 +13,6 @@ function circleHover(d, circle, tooltip){
 	var html_total = "<strong>Total: </strong>";
 	var html_span = "<span style = 'color: " + d.color + "'>" + d.total + "</span>";
 	var tooltip_gap = 20;
-	var height = "20px";
-	var width = "70px";
 	
 	html_text = html_total + html_span;
 	
@@ -26,17 +24,13 @@ function circleHover(d, circle, tooltip){
 		var html_overall_profit = "<br><strong>Overall: </strong><span style = 'color: " + overall_profit_color + "'>" + d.overall_profit + "</span>";
 		html_text += html_profit + html_overall_profit;
 		
-		height = "50px";
-		width = "70px";
 		tooltip_gap = 50
 	}
 	
 	// Add HTML Text to Tooltip
 	tooltip.html(html_text)
 	.style("left", (d3.event.pageX - 15) + "px")
-	.style("top", (d3.event.pageY - tooltip_gap) + "px")
-	.style("height", height)
-	.style("width", width);
+	.style("top", (d3.event.pageY - tooltip_gap) + "px");
 }
 
 function clickCircle(d,i){
@@ -65,9 +59,9 @@ function clickCircle(d,i){
 			week_stat.push({"string": day, "value": Math.round(d[key])});
 		}
 	});
-
+	
 	// Get average and insert it after Total
-	var average = { "string": "AVERAGE:", "value": Math.round(d.total/(week_stat.length - 2)) };
+	var average = { "string": "AVERAGE:", "value": Math.round(d.total/(week_stat.length - 1)) };
 	week_stat.splice(1, 0, average);
 
 	// Modify the height style
@@ -496,6 +490,9 @@ function plotBar(full_data){
 	xScale.domain(daily_total.map(function(d) { return d.day; }));
 	yScale.domain([0, daily_max]);
 	
+	// Prepare tooltip for bar chart 
+	var tooltip = d3.select("body").append("div").attr("class", "barTip").style("opacity", 0);
+	
 	// Draw SVG
 	var svg = d3.select("#bar").append("svg")
 				.attr("width", width + margin.left + margin.right)
@@ -535,11 +532,29 @@ function plotBar(full_data){
 	svg.selectAll("bar")
 		.data(daily_total)
 		.enter().append("rect")
-		.style("fill", "steelblue")
+		.attr("class", "bar")
 		.attr("x", function(d) { return xScale(d.day); })
 		.attr("y", function(d) { return yScale(d.amt); })
 		.attr("width", xScale.bandwidth())
-		.attr("height", function(d) { return height - yScale(d.amt); });
+		.attr("height", function(d) { return height - yScale(d.amt); })
+		.on("mousemove", function(d) {
+			
+			tooltip.transition().duration(200)
+			.style("opacity", 0.9);
+			
+			d3.select(this).style("fill", "brown");
+			var html_text = "<strong>Total:</strong> <span style='color:red'>" + d.amt + "</span>"
+			
+			tooltip.style("left", d3.event.pageX - 20 + "px")
+					.style("top", d3.event.pageY - 20 + "px")
+					.style("display", "inline-block")
+					.html(html_text);
+					
+        }).on("mouseout", function(d) {
+			
+			d3.select(this).style("fill","steelblue");
+			tooltip.style("display", "none");
+		});
 }
 				
 function preProcess(error, data){

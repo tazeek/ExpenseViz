@@ -2,6 +2,7 @@ body {
   font: 21px sans-serif;
   
 }
+
 #stats {
 	font-size: 15px;
     position: absolute;
@@ -29,6 +30,10 @@ body {
 	stroke: black;
 }
 
+.bar {
+	fill: steelblue;
+}
+
 .axis path,
 .axis line {
 	fill: none;
@@ -41,7 +46,8 @@ body {
 	opacity: 0.2;
 }
 
-div.tooltip {	
+.barTip,
+.tooltip {	
 	position: absolute;			
 	text-align: center;								
 	padding: 2px;				
@@ -49,5 +55,7 @@ div.tooltip {
 	background: lightsteelblue;	
 	border: 2px;		
 	border-radius: 8px;			
-	pointer-events: none;			
+	pointer-events: none;	
+	height: auto;
+	width: auto;
 }
