@@ -12,6 +12,10 @@ function circleHover(d, circle, tooltip){
 	var html_text = "";
 	var html_total = "<strong>Total: </strong>";
 	var html_span = "<span style = 'color: " + d.color + "'>" + d.total + "</span>";
+	var tooltip_gap = 20;
+	var height = "20px";
+	var width = "70px";
+	
 	html_text = html_total + html_span;
 	
 	if("profit" in d){
@@ -22,7 +26,7 @@ function circleHover(d, circle, tooltip){
 		var html_overall_profit = "<br><strong>Overall: </strong><span style = 'color: " + overall_profit_color + "'>" + d.overall_profit + "</span>";
 		html_text += html_profit + html_overall_profit;
 		
-		height = "40px";
+		height = "50px";
 		width = "70px";
 		tooltip_gap = 50
 	}
@@ -46,7 +50,6 @@ function clickCircle(d,i){
 
 	// Filter keys and get the necessary key-value pairs
 	var week_stat =[];
-	var days = 0;
 
 	keys.forEach(function(key){
 		
@@ -60,12 +63,11 @@ function clickCircle(d,i){
 			var day = key[0].toUpperCase() + key.substring(1) + ": ";
 			day = day.toUpperCase();
 			week_stat.push({"string": day, "value": Math.round(d[key])});
-			days++;
 		}
 	});
 
 	// Get average and insert it after Total
-	var average = { "string": "AVERAGE:", "value": Math.round(d.total/days) };
+	var average = { "string": "AVERAGE:", "value": Math.round(d.total/(week_stat.length - 2)) };
 	week_stat.splice(1, 0, average);
 
 	// Modify the height style
@@ -450,6 +452,10 @@ function plotScatter(full_data, weekdays_data, budget) {
 	return; 
 		
 }
+
+function plotBar(full_data){
+	console.log("PREPARE TO PLOT");
+}
 				
 function preProcess(error, data){
 	
@@ -481,6 +487,7 @@ function preProcess(error, data){
 	});
 	
 	plotScatter(weeks_array, weekdays_array, 200);
+	plotBar(weeks_array);
 	
 	return
 }
