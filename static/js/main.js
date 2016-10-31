@@ -530,6 +530,16 @@ function plotBar(full_data){
 		.style("font-weight", "bold")
 		.style("text-anchor", "middle")
 		.text("Total");
+		
+	// Draw the bars
+	svg.selectAll("bar")
+		.data(daily_total)
+		.enter().append("rect")
+		.style("fill", "steelblue")
+		.attr("x", function(d) { return xScale(d.day); })
+		.attr("y", function(d) { return yScale(d.amt); })
+		.attr("width", xScale.bandwidth())
+		.attr("height", function(d) { return height - yScale(d.amt); });
 }
 				
 function preProcess(error, data){
