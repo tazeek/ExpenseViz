@@ -459,6 +459,19 @@ function plotBar(full_data){
 	var keys = d3.keys(full_data[0]);
 	keys.splice(0,5);
 	
+	// Array to store dictionary of keys 
+	var daily_total = [];
+	
+	keys.forEach(function(key){
+		
+		var total = d3.sum(full_data, function(d) { return d[key]; });
+		total = Math.round(total);
+		daily_total.push({"day": key, "amt": total});
+		
+	});
+	
+	console.log(daily_total);
+	
 	return;
 	// For the Bar Chart
 	var margin = {top: 50, right: 30, bottom: 60, left: 100};
