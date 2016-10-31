@@ -592,4 +592,10 @@ function preProcess(error, data){
 	d3.queue()
 		.defer(d3.csv, "/load")
 		.await(preProcess);
+		
+	window.onscroll = function(){
+		if(document.body.scrollTop > 550){
+			d3.select("#bar").attr("display","none");
+		};
+	}
 })();
