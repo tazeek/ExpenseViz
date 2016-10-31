@@ -454,7 +454,33 @@ function plotScatter(full_data, weekdays_data, budget) {
 }
 
 function plotBar(full_data){
-	console.log("PREPARE TO PLOT");
+	
+	// Get the keys from the JSON Array and splice keys to keep days
+	var keys = d3.keys(full_data[0]);
+	keys.splice(0,5);
+	
+	return;
+	// For the Bar Chart
+	var margin = {top: 50, right: 30, bottom: 60, left: 100};
+	var width = 960 - margin.left - margin.right;
+	var height = 540 - margin.top - margin.bottom;
+	
+	// Number of ticks
+	var x_ticks = full_data.length
+	//var y_ticks = week_max/20
+	
+	// Plot X-Axis values 
+	var xScale = d3.scaleLinear().range([0, width]);
+	var xAxis = d3.axisBottom().scale(xScale).ticks(x_ticks);
+	var xValue = function(data) { return data.week_number;}
+	var xMap = function(data) { return xScale(xValue(data));}
+	
+	// Draw SVG
+	var svg = d3.select("#bar").append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 }
 				
 function preProcess(error, data){
@@ -471,13 +497,12 @@ function preProcess(error, data){
 		
 		
 		// Make a JSON out of the statistics
-		week_stat = { "week_number": +d.week, "total": +d.week_total, 
-					"profit": +d.weekly_profit, "overall_profit": +d.overall_profit, 
-					"color": d.week_color, "saturday": +d.saturday, "sunday": +d.sunday,
-					"monday": +d.monday, "tuesday": +d.tuesday, "wednesday": +d.wednesday,
-					"thursday": +d.thursday, "friday": +d.friday};
+		week_stat = { "week_number": +d.week, "profit": +d.weekly_profit, "overall_profit": +d.overall_profit, 
+					"color": d.week_color,"total": +d.week_total, "monday": +d.monday, "tuesday": +d.tuesday, 
+					"wednesday": +d.wednesday, "thursday": +d.thursday, "friday": +d.friday, "saturday": +d.saturday, 
+					"sunday": +d.sunday};
 		
-		weekdays_stat = { "week_number": +d.week, "total": +d.weekdays_total, "color": d.weekdays_color,
+		weekdays_stat = { "week_number": +d.week, "color": d.weekdays_color, "total": +d.weekdays_total,
 						"monday": +d.monday, "tuesday": +d.tuesday, "wednesday": +d.wednesday,
 						"thursday": +d.thursday, "friday": +d.friday};
 		
