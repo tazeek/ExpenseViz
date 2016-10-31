@@ -327,7 +327,7 @@ function drawLegend(svg, width, height) {
 
 function plotScatter(full_data, weekdays_data, budget) {
 	
-	// Get the maximum spent in a week and round to nearest 10
+	// Get the maximum spent in a week and round to nearest 50
 	var week_max = Math.max.apply(Math,full_data.map(function(week){return week.total;}))
 	week_max = Math.round(week_max / 10) * 10
 	
@@ -466,29 +466,35 @@ function plotBar(full_data){
 		
 		var total = d3.sum(full_data, function(d) { return d[key]; });
 		total = Math.round(total);
+		key = key[0].toUpperCase() + key.substring(1);
 		daily_total.push({"day": key, "amt": total});
 		
 	});
 	
-	// Get the total highest amount spent in a day and round to nearest 10 
+	// Get the total highest amount spent in a day and round to nearest 50 
 	var daily_max = Math.max.apply(Math,daily_total.map(function(day){return day.amt;}));
-	daily_max = Math.round(daily_max / 10) * 10;
-	
-	return;
+	daily_max = Math.round(daily_max / 50) * 50;
+
 	// For the Bar Chart
-	var margin = {top: 50, right: 30, bottom: 60, left: 100};
+	var margin = {top: 130, right: 30, bottom: 60, left: 100};
 	var width = 960 - margin.left - margin.right;
 	var height = 540 - margin.top - margin.bottom;
 	
 	// Number of ticks
-	var x_ticks = full_data.length
-	var y_ticks = daily_max/20
+	var x_ticks = full_data.length;
+	var y_ticks = Math.round(daily_max/50);
 	
 	// Plot X-Axis values 
-	var xScale = d3.scaleLinear().range([0, width]);
+	var xScale = d3.scaleBand().rangeRound([0, width]).padding(0.1);
 	var xAxis = d3.axisBottom().scale(xScale).ticks(x_ticks);
-	var xValue = function(data) { return data.week_number;}
-	var xMap = function(data) { return xScale(xValue(data));}
+	
+	// Plot Y-Axis values
+	var yScale = d3.scaleLinear().range([height,0]);
+	var yAxis = d3.axisLeft().scale(yScale).ticks(y_ticks);
+	
+	// Prepare domain for X-Axis and Y-Axis
+	xScale.domain(daily_total.map(function(d) { return d.day; }));
+	yScale.domain([0, daily_max]);
 	
 	// Draw SVG
 	var svg = d3.select("#bar").append("svg")
@@ -496,6 +502,34 @@ function plotBar(full_data){
 				.attr("height", height + margin.top + margin.bottom)
 				.append("g")
 				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+				
+	// Plot X-Axis 
+	svg.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + height + ")")
+		.call(xAxis);
+		
+	svg.append("text")
+		.attr("class", "label")
+		.attr("transform", "translate(" + (width/2) + "," + ( height + 50) + ")")
+		.style("font-size", "13px")
+		.style("font-weight", "bold")
+		.style("text-anchor", "middle")
+		.text("Day");
+		
+	// Plot Y-Axis 
+	svg.append("g")
+		.attr("class", "y axis")
+		.call(yAxis);
+		
+	svg.append("text")
+		.attr("class", "label")
+		.attr("transform", "translate("+ -70 +","+(height/2)+")rotate(-90)")
+		.attr("dy", ".71em")
+		.style("font-size", "13px")
+		.style("font-weight", "bold")
+		.style("text-anchor", "middle")
+		.text("Total");
 }
 				
 function preProcess(error, data){
