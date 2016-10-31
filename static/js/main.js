@@ -64,9 +64,6 @@ function clickCircle(d,i){
 	var average = { "string": "AVERAGE:", "value": Math.round(d.total/(week_stat.length - 1)) };
 	week_stat.splice(1, 0, average);
 
-	// Modify the height style
-	//week.style("height", (week_stat.length*30) + "px");
-
 	// Remove the existing list, if any
 	week.select("ul").remove();
 
@@ -103,7 +100,7 @@ function drawCircles(svg, data, class_name, xMap, yMap, tooltip) {
 			.attr("cx", xMap)
 			.attr("cy", yMap)
 			.attr("fill", function(d) { return d.color; } )
-			.attr("opacity", 0.5)
+			.style("opacity", 0.5)
 			.on("mouseover", function(d) { 
 				
 				var circle = d3.select(this);
@@ -134,7 +131,7 @@ function drawLine(svg, data, class_name, valueline, color) {
 				.attr("stroke", color)
 				.attr("stroke-width", 2)
 				.attr("fill", "none")
-				.attr("opacity", 0.5);
+				.style("opacity", 0.5);
 			
 	
 	// Get total length of the path 
@@ -151,13 +148,13 @@ function drawLine(svg, data, class_name, valueline, color) {
 			
 			svg.selectAll(".legend").transition()
 			.duration(1000)
-			.attr("opacity",1);
+			.style("opacity",1);
 			
 			svg.select("#legend-box").transition()
 				.duration(500)
-				.attr("opacity", 1);
+				.style("opacity", 1);
 				
-			d3.select("#stats").style("display","inline");
+			d3.select("#stats").transition().duration(200).style("opacity",1);
 				
 		});
 }
@@ -180,6 +177,7 @@ function getStats(full_data){
 	
 	// Append to list 
 	var list = d3.select("#stats").append("ul");
+	d3.select("#stats").style("opacity",0);
 	
 	// Append all the data to the list
 	list.selectAll("li")
@@ -226,7 +224,7 @@ function legendEffect(d, hover){
 			
 			red_circles.transition().duration(200)
 				.attr("r", radius)
-				.attr("opacity", opacity);
+				.style("opacity", opacity);
 			
 			break;
 			
@@ -240,8 +238,8 @@ function legendEffect(d, hover){
 				
 			blue_circles.transition()
 				.duration(200)
-				.attr("opacity", opacity)
-				.attr("r", radius);
+				.attr("r", radius)
+				.style("opacity", opacity);
 
 			break;
 		}
@@ -250,8 +248,8 @@ function legendEffect(d, hover){
 				
 			d3.selectAll(".weekdays").transition()
 				.duration(200)
-				.attr("opacity", opacity)
-				.attr("r", radius);
+				.attr("r", radius)
+				.style("opacity", opacity);
 				
 			break;
 			
@@ -269,7 +267,7 @@ function drawLegend(svg, width, height) {
 		.attr("y", height - 85)
 		.attr("width", 120)
 		.attr("height", 80)
-		.attr("opacity", 0);
+		.style("opacity", 0);
 	
 	// Give array
 	var legend_data = [ { "color": "red", "text":"Overbudget"}, 
@@ -281,7 +279,7 @@ function drawLegend(svg, width, height) {
 					.data(legend_data)
 					.enter().append("g")
 					.attr("class", "legend")
-					.attr("opacity",0)
+					.style("opacity",0)
 					.attr("transform", function(d, i) { 
 						return "translate(" + (-width + 40) + "," + (i * 25 + (height - 80)) + ")"; 
 					});
@@ -416,12 +414,12 @@ function plotScatter(full_data, weekdays_data, budget) {
 	svg.append("line")
 		.style("stroke","red")
 		.style("stroke-width", 2)
-		.attr("opacity", 0.5)
 		.attr("class", "budget")
 		.attr("x1", xScale(1))
 		.attr("y1", yScale(budget))
 		.attr("x2", xScale(x_ticks))
-		.attr("y2", yScale(budget));
+		.attr("y2", yScale(budget))
+		.style("opacity", 0.5);
 		
 	// Define the line first 
 	var valueline = d3.line()
@@ -592,17 +590,17 @@ function preProcess(error, data){
 function scrolling(){
 
 	if(document.body.scrollTop > 175){
-		d3.select("#barChart").style("visibility", "visible");
+		d3.select("#barChart").transition().duration(200).style("opacity", 1);
 	} else {
-		d3.select("#barChart").style("visibility", "hidden");
+		d3.select("#barChart").transition().duration(200).style("opacity", 0.5);
 	}
 	
 	if(document.body.scrollTop > 275){
 		d3.selectAll(".bar").transition().duration(200).style("opacity", 1);
-		d3.select("#chart").style("opacity", 0.5);
+		d3.select("#chart").transition().duration(200).style("opacity", 0.5);
 	} else {
 		d3.selectAll(".bar").transition().duration(200).style("opacity", 0);
-		d3.select("#chart").style("opacity", 1);
+		d3.select("#chart").transition().duration(200).style("opacity", 1);
 	}
 }
 
