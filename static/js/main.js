@@ -491,7 +491,7 @@ function plotBar(full_data){
 	yScale.domain([0, daily_max]);
 	
 	// Prepare tooltip for bar chart 
-	var tooltip = d3.select("body").append("div").attr("class", "barTip").style("opacity", 0);
+	var tooltip = d3.select("body").append("div").attr("class", "barTip");
 	
 	// Draw SVG
 	var svg = d3.select("#bar").append("svg")
@@ -538,9 +538,6 @@ function plotBar(full_data){
 		.attr("width", xScale.bandwidth())
 		.attr("height", function(d) { return height - yScale(d.amt); })
 		.on("mousemove", function(d) {
-			
-			tooltip.transition().duration(200)
-			.style("opacity", 0.9);
 			
 			d3.select(this).style("fill", "brown");
 			var html_text = "<strong>Total:</strong> <span style='color:red'>" + d.amt + "</span>"
