@@ -65,7 +65,7 @@ function clickCircle(d,i){
 	week_stat.splice(1, 0, average);
 
 	// Modify the height style
-	week.style("height", (week_stat.length*30) + "px");
+	//week.style("height", (week_stat.length*30) + "px");
 
 	// Remove the existing list, if any
 	week.select("ul").remove();
@@ -545,8 +545,8 @@ function plotBar(full_data){
 			d3.select(this).style("fill", "brown");
 			var html_text = "<strong>Total:</strong> <span style='color:red'>" + d.amt + "</span>"
 			
-			tooltip.style("left", d3.event.pageX - 20 + "px")
-					.style("top", d3.event.pageY - 20 + "px")
+			tooltip.style("left", d3.event.pageX - 50 + "px")
+					.style("top", d3.event.pageY - 70 + "px")
 					.style("display", "inline-block")
 					.html(html_text);
 					

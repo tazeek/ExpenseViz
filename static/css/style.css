@@ -8,7 +8,7 @@ body {
     position: absolute;
 	top: 50px;
 	text-align: center;
-	height: 140px;
+	height: auto;
 	width: 220px;
 	background: #F5F5DC;
 	display: none;
@@ -18,7 +18,7 @@ body {
 	position: absolute;
 	top: 210px;
 	text-align: center;
-	height: 210px;
+	height: auto;
 	width: 220px;
 	background: #F5F5DC;
 	display: none;
@@ -46,8 +46,22 @@ body {
 	opacity: 0.2;
 }
 
-.barTip,
+.barTip {
+	
+	position: absolute;
+	display: none;
+	min-width: 80px;
+	height: auto;
+	background: none repeat scroll 0 0 #ffffff;
+	font: 12px sans-serif;
+	border: 1px solid #6F257F;
+	padding: 14px;
+	text-align: center;
+
+}
+
 .tooltip {	
+
 	position: absolute;			
 	text-align: center;								
 	padding: 2px;				
