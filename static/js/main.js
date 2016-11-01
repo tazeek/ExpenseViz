@@ -552,6 +552,24 @@ function plotBar(full_data){
 			tooltip.style("display", "none");
 		});
 }
+
+function prepModal(number){
+	
+	// Prepare array of days
+	var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+	
+	// Get today's day number 
+	var current_day = new Date().getDay();
+	
+	// If it is monday (1), increment number
+	number = current_day == 1 ? number++ : number;
+	
+	// Add week number in Modal
+	d3.select("#weekNum").html(number);
+	
+	// Add current day in Modal 
+	d3.select("#day").html(days[current_day]);
+}
 				
 function preProcess(error, data){
 	
@@ -581,17 +599,11 @@ function preProcess(error, data){
 		weekdays_array.push(weekdays_stat);
 	});
 	
-	//Add week number in Modal
-	d3.select("#weekNum").html(weeks_array.length);
-	
+	prepModal(weeks_array.length);
 	plotScatter(weeks_array, weekdays_array, 200);
 	plotBar(weeks_array);
 	
 	return
-}
-
-function newEntry(){
-	//d3.select("#id01").style("display","block");
 }
 
 function scrolling(){
