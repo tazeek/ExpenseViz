@@ -155,6 +155,7 @@ function drawLine(svg, data, class_name, valueline, color) {
 				.style("opacity", 1);
 				
 			d3.select("#stats").transition().duration(200).style("opacity",1);
+			d3.select("#entry").transition().duration(200).style("opacity",1);
 				
 		});
 }
@@ -163,7 +164,7 @@ function getStats(full_data){
 	
 	// Statistical variables
 	var total_spent = d3.sum(full_data, function(d){ return d.total; });
-	var weekly_average = total_spent/full_data.length;
+	var weekly_average = Math.round(total_spent/full_data.length);
 	var max_exepense = d3.max(full_data, function(d) { return d.total; });
 	var min_expense = d3.min(full_data, function(d) { return d.total; });
 	
@@ -177,7 +178,6 @@ function getStats(full_data){
 	
 	// Append to list 
 	var list = d3.select("#stats").append("ul");
-	d3.select("#stats").style("opacity",0);
 	
 	// Append all the data to the list
 	list.selectAll("li")
@@ -320,12 +320,12 @@ function drawLegend(svg, width, height) {
 function plotScatter(full_data, weekdays_data, budget) {
 	
 	// Get the maximum spent in a week and round to nearest 50
-	var week_max = Math.max.apply(Math,full_data.map(function(week){return week.total;}))
-	week_max = Math.round(week_max / 10) * 10
+	var week_max = Math.max.apply(Math,full_data.map(function(week){return week.total;}));
+	week_max = Math.round(week_max / 10) * 10;
 	
 	// Number of ticks
-	var x_ticks = full_data.length
-	var y_ticks = week_max/20
+	var x_ticks = full_data.length;
+	var y_ticks = week_max/50;
 	
 	// For the graph
 	var margin = {top: 50, right: 30, bottom: 60, left: 100};
@@ -587,12 +587,18 @@ function preProcess(error, data){
 	return
 }
 
+function newEntry(){
+	//d3.select("#id01").style("display","block");
+}
+
 function scrolling(){
 
 	if(document.body.scrollTop > 175){
 		d3.select("#barChart").transition().duration(200).style("opacity", 1);
+		d3.select("#entry").transition().duration(200).style("opacity",0);
 	} else {
 		d3.select("#barChart").transition().duration(200).style("opacity", 0.5);
+		d3.select("#entry").transition().duration(200).style("opacity",1);
 	}
 	
 	if(document.body.scrollTop > 275){
