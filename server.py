@@ -1,6 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 import pandas as pd
 import numpy as np
+import datetime
 
 app = Flask(__name__, template_folder='templates')
 
@@ -19,7 +20,23 @@ def add_header(r):
 
 @app.route('/test', methods=['POST'])
 def getNewExpense():
-	print("I got it!")
+	
+	# First load the file 
+	df = pd.read_csv('expense.csv')
+	
+	# Get week number, day and expense 
+	week_number = len(df)
+	
+	current_day = datetime.datetime.now()
+	current_day = current_day.strftime("%A")
+	
+	expense = request.form["expense"]
+	
+	print("NUMBER: ", week_number)
+	print("DAY: ", current_day)
+	print("EXPENSE: ", request.form["expense"])
+	
+	return redirect('/')
 
 @app.route('/')	
 def index():
