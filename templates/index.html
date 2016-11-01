@@ -33,7 +33,7 @@
 		
 			<div class="col-md-10">
 				<div id="chart"></div>
-				<button id="entry" type="button" class="btn btn-primary active" data-toggle="modal" data-target="#myModal">Add New Entry</button>
+				<button id="entry" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Entry</button>
 				<div id="barChart"></div>
 			</div>
 			
@@ -59,9 +59,13 @@
 					</div>
 					
 					<div class="modal-body">
+						Week Number: <span id="weekNum"></span><br>
+						Day: <span id="day"></span><br>
+						Amount Spent: <input type="number" name="expense">
 					</div>
 					
 					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 					</div>
 					
 				</div>

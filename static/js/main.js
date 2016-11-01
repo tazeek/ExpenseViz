@@ -581,6 +581,9 @@ function preProcess(error, data){
 		weekdays_array.push(weekdays_stat);
 	});
 	
+	//Add week number in Modal
+	d3.select("#weekNum").html(weeks_array.length);
+	
 	plotScatter(weeks_array, weekdays_array, 200);
 	plotBar(weeks_array);
 	
