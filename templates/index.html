@@ -58,11 +58,14 @@
 						<h4 class="modal-title">Add New Expense</h4>
 					</div>
 					
-					<div class="modal-body">
-						Week Number: <span id="weekNum"></span><br>
-						Day: <span id="day"></span><br>
-						Amount Spent: <input type="number" name="expense">
-					</div>
+					<form action="/test" method="post">
+						<div class="modal-body">
+							Week Number: <span id="weekNum"></span><br>
+							Day: <span id="day"></span><br>
+							Amount Spent: <input type="number" name="expense">
+						</div>
+						<button type="submit" class="btn btn-success" value="Submit">ADD!</button>
+					</form>
 					
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>

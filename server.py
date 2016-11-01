@@ -17,6 +17,10 @@ def add_header(r):
     return r
 
 
+@app.route('/test', methods=['POST'])
+def getNewExpense():
+	print("I got it!")
+
 @app.route('/')	
 def index():
 	return render_template('index.html')
