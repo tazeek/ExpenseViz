@@ -576,8 +576,8 @@ function ajaxRequests(){
 	// Handle new input
 	$('#newInput').submit(function() {
 		
-		$.post( "/test", $(this).serialize() );
-		
+		var result = $.post( "/test", $(this).serialize() );
+		console.log(result);
 		document.getElementById('newInput').reset();
 		$('#myModal').modal('toggle');
 		

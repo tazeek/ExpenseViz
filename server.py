@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 import pandas as pd
 import numpy as np
 import datetime
+import json
 
 app = Flask(__name__, template_folder='templates')
 
@@ -44,7 +45,7 @@ def getNewExpense():
 	# Save as a test 
 	df.to_csv('test.csv', index=False)
 	
-	return "JSON"
+	return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 @app.route('/')	
 def index():
