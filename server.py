@@ -32,8 +32,14 @@ def getNewExpense():
 	
 	expense = float(request.form["expense"])
 	
-	# Fill in the required gap
-	df.loc[week_number - 1, current_day] = expense
+	# Check if current day has any entry or not 
+	current_day_expense = df.loc[week_number-1, current_day]
+	
+	# Fill in the required column
+	if(pd.isnull(current_day_expense)):
+		df.loc[week_number-1, current_day] = expense 
+	else:
+		df.loc[week_number-1, current_day] += expense 
 	
 	# Save as a test 
 	df.to_csv('test.csv', index=False)
