@@ -624,20 +624,19 @@ function preProcess(error, data){
 }
 
 function scrolling(){
-
-	if(document.body.scrollTop > 175){
-		d3.select("#barChart").transition().duration(200).style("opacity", 1);
-	} else {
-		d3.select("#barChart").transition().duration(200).style("opacity", 0.5);
-	}
 	
-	if(document.body.scrollTop > 275){
-		d3.selectAll(".bar").transition().duration(200).style("opacity", 1);
-		d3.select("#chart").transition().duration(200).style("opacity", 0.5);
-	} else {
-		d3.selectAll(".bar").transition().duration(200).style("opacity", 0);
-		d3.select("#chart").transition().duration(200).style("opacity", 1);
-	}
+	// Get number of pixels scrolled
+	var scrolled_pixels = document.body.scrollTop;
+		
+	// Give opacity values for bar chart
+	var axis_opacity = scrolled_pixels > 175 ? 1 : 0.5;
+	var bar_opacity = scrolled_pixels > 275 ? 1 : 0;
+	var scatter_opacity = scrolled_pixels > 275 ? 0.5 : 1;
+	
+	// Transition the changes
+	d3.select("#barChart").transition().duration(200).style("opacity", axis_opacity);
+	d3.selectAll(".bar").transition().duration(200).style("opacity", bar_opacity);
+	d3.select("#chart").transition().duration(200).style("opacity", scatter_opacity);
 }
 
 (function(){

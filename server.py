@@ -43,7 +43,7 @@ def getNewExpense():
 		df.loc[week_number-1, current_day] += expense 
 	
 	# Save as a test 
-	df.to_csv('test.csv', index=False)
+	#df.to_csv('test.csv', index=False)
 	
 	return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
