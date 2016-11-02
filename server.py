@@ -28,9 +28,14 @@ def getNewExpense():
 	week_number = len(df)
 	
 	current_day = datetime.datetime.now()
-	current_day = current_day.strftime("%A")
+	current_day = current_day.strftime("%A").lower()
 	
-	expense = request.form["expense"]
+	expense = float(request.form["expense"])
+	
+	# Fill in the required gap
+	df.loc[week_number - 1, current_day] = expense
+	
+	print(df.tail(1))
 	
 	print("NUMBER: ", week_number)
 	print("DAY: ", current_day)
