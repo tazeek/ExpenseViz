@@ -570,6 +570,16 @@ function prepModal(number){
 	// Add current day in Modal 
 	d3.select("#day").html(days[current_day]);
 }
+
+function ajaxRequests(){
+	// Handle requests from FORM via AJAX
+	$(function() {
+		$('form').submit(function() {
+			$.post( "/test", $("#newInput").serialize() );
+			return false;
+		}); 
+	})
+}
 				
 function preProcess(error, data){
 	
@@ -602,6 +612,7 @@ function preProcess(error, data){
 	prepModal(weeks_array.length);
 	plotScatter(weeks_array, weekdays_array, 200);
 	plotBar(weeks_array);
+	ajaxRequests();
 	
 	return
 }
@@ -610,10 +621,8 @@ function scrolling(){
 
 	if(document.body.scrollTop > 175){
 		d3.select("#barChart").transition().duration(200).style("opacity", 1);
-		//d3.select("#entry").transition().duration(200).style("opacity",0);
 	} else {
 		d3.select("#barChart").transition().duration(200).style("opacity", 0.5);
-		//d3.select("#entry").transition().duration(200).style("opacity",1);
 	}
 	
 	if(document.body.scrollTop > 275){

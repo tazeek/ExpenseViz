@@ -36,7 +36,7 @@ def getNewExpense():
 	print("DAY: ", current_day)
 	print("EXPENSE: ", request.form["expense"])
 	
-	return redirect('/')
+	return "JSON"
 
 @app.route('/')	
 def index():
