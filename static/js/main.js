@@ -572,13 +572,17 @@ function prepModal(number){
 }
 
 function ajaxRequests(){
+	
 	// Handle requests from FORM via AJAX
 	$(function() {
-		$('form').submit(function() {
-			$.post( "/test", $("#newInput").serialize() );
+		$('#newInput').submit(function() {
+			var reply = $.post( "/test", $(this).serialize() );
+			document.getElementById('newInput').reset();
 			return false;
 		}); 
 	})
+	
+	
 }
 				
 function preProcess(error, data){
