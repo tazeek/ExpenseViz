@@ -153,9 +153,12 @@ function drawLine(svg, data, class_name, valueline, color) {
 			svg.select("#legend-box").transition()
 				.duration(500)
 				.style("opacity", 1);
-				
+			
+			// Make necessary boxes and buttons appear smoothly
 			d3.select("#stats").transition().duration(200).style("opacity",1);
 			d3.select("#entry").transition().duration(200).style("opacity",1);
+			d3.select("#edit").transition().duration(200).style("opacity",1);
+			d3.select("#pref").transition().duration(200).style("opacity", 1);
 				
 		});
 }
@@ -579,7 +582,7 @@ function ajaxRequests(){
 		var result = $.post( "/test", $(this).serialize() );
 		console.log(result);
 		document.getElementById('newInput').reset();
-		$('#myModal').modal('toggle');
+		$('#addModal').modal('toggle');
 		
 		return false;
 		

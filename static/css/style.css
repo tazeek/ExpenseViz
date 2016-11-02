@@ -38,6 +38,30 @@
 	opacity: 0;
 }
 
+#edit {
+	position: absolute;
+	left: 240px;
+	font: 12px sans-serif;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    width: auto;
+	opacity: 0;
+}
+
+#pref {
+	position: absolute;
+	right: 30px;
+	font: 12px sans-serif;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    width: auto;
+	opacity: 0;
+}
+
 .bar {
 	fill: steelblue;
 }
