@@ -35,11 +35,8 @@ def getNewExpense():
 	# Fill in the required gap
 	df.loc[week_number - 1, current_day] = expense
 	
-	print(df.tail(1))
-	
-	print("NUMBER: ", week_number)
-	print("DAY: ", current_day)
-	print("EXPENSE: ", request.form["expense"])
+	# Save as a test 
+	df.to_csv('test.csv', index=False)
 	
 	return "JSON"
 
